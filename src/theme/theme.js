@@ -1,6 +1,6 @@
-const colors = {
+export const theme = {
    white: '#ffffff',
-   black: '',
+   black: '#1c1c1c',
    grey: '',
    yellowPrimary: '',
    yellowHover: '',
@@ -8,4 +8,5 @@ const colors = {
    textBlack: '#282828',
    textGrey: '',
    textLightGrey: '',
+   mainWidth: '1250px',
 };
