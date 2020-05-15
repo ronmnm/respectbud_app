@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const HeaderStyled = styled.div`
    /* display: grid; */
    /* grid-template-rows: minmax(50px, 30vh); */
-   height: 12vh;
+   height: 10vh;
    min-height: 50px;
    max-height: 130px;
    .header_wrapper {

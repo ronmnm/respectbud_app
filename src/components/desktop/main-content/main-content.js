@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
 import MainSection from './main-section/main-section';
+import { connect } from 'react-redux';
+import * as t from '../../../redux/actionTypes';
+import ResultPage from './result-section/result-page';
 
-const MainContent = () => {
-   const [currentComponent] = useState('main_section');
+const MainContent = ({ currentComponent }) => {
    switch (currentComponent) {
-      case 'main_section':
-         return <MainSection />
-      case 'order_section':
+      case t.MAIN_FORM:
+         return <MainSection/>;
+
+      case t.RESULT_PAGE:
+         return <ResultPage />
+
+      case t.ORDER_PAGE:
          return <div>order section comp</div>;
-      case 'result_section':
-         return <div>result section comp</div>;
+
       default:
          return <MainSection />;
    }
 };
 
-export default MainContent
+const mapStateToProps = ({ desktop }) => ({
+   currentComponent: desktop.currentComponent,
+});
+export default connect(mapStateToProps)(MainContent);

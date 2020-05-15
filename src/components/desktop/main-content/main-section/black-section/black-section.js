@@ -39,7 +39,7 @@ const BlackSection = () => {
                <InputStyled placeholder='Песок' />
             </div>
             <div>
-               <div>Материал</div>
+               <div>Вид</div>
                <InputStyled placeholder='а' />
             </div>
             <div>

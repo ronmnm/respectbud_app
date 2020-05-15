@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { PrimaryButton } from '../../../../elements/buttons';
 import { InputStyled } from '../../../../elements/input';
+import PhoneInput from './phone-input';
+import { connect } from 'react-redux';
+import * as t from '../../../../../redux/actionTypes';
 
 const CalculateFormStyled = styled.div`
    /* background-color: lightcyan; */
@@ -18,47 +21,54 @@ const CalculateFormStyled = styled.div`
          display: grid;
          align-items: flex-end;
          grid-template-rows: repeat(3, 1fr);
-         input{
+         input {
             width: 100%;
+         }
+         .input_label {
+            display: inline-block;
+            margin-bottom: 5px;
+            margin-left: 5px;
          }
       }
    }
 `;
 
-const CalculateForm = () => {
+const CalculateForm = ({ dispatch }) => {
    return (
       <CalculateFormStyled>
          <div className="calculate_form_wrapper">
             <div className="calculate_form_column">
                <div>
-                  <div>Ваше имя</div>
-                  <InputStyled border placeholder='Петро' />
+                  <span className="input_label">Ваше имя</span>
+                  <InputStyled border placeholder="Петро" />
                </div>
                <div>
-                  <div>Название организации</div>
-                  <InputStyled border placeholder='ТОВ' />
+                  <span className="input_label">Название организации</span>
+                  <InputStyled border placeholder="ТОВ" />
                </div>
                <div>
-                  <div>Номер телефона</div>
-                  <InputStyled border placeholder='+38(0__)___-__-__' />
+                  <span className="input_label">Номер телефона</span>
+                  <PhoneInput />
                </div>
             </div>
             <div className="calculate_form_column">
                <div>
-                  <div>Форма оплаты</div>
-                  <InputStyled border placeholder='Наличный расчет ' />
+                  <span className="input_label">Форма оплаты</span>
+                  <InputStyled border placeholder="Наличный расчет " />
                </div>
                <div>
-                  <div>Адрес</div>
-                  <InputStyled border placeholder='г. Киев, ул. Олеся Гончара,2' />
+                  <span className="input_label">Адрес</span>
+                  <InputStyled border placeholder="г. Киев, ул. Олеся Гончара,2" />
                </div>
-               <PrimaryButton  onClick={() => alert('hi')}>Рассчитать</PrimaryButton>
+               <PrimaryButton onClick={() => dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE })}>
+                  Рассчитать
+               </PrimaryButton>
             </div>
-
-            
-            
          </div>
       </CalculateFormStyled>
    );
 };
-export default CalculateForm;
+
+// const mapDispatchToProps = di
+
+export default connect(null, null)(CalculateForm);

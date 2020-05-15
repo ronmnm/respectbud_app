@@ -1,18 +1,19 @@
 import styled, { css } from 'styled-components';
 
-const additionalStyles = css`
+export const additionalStylesWithBorder = css`
    border: 1px solid ${({ theme }) => theme.darkGrey};
    &:focus {
       border: 1px solid ${({ theme }) => theme.black};
    }
 `;
 
-export const InputStyled = styled.input`
+export const inputStyles = css`
    height: 48px;
    width: 100%;
    border: none;
    background-color: ${({ theme }) => theme.white};
    font-size: 16px;
+   /* letter-spacing: .2px; */
    color: ${({ theme }) => theme.textBlack};
    padding-left: 15px;
    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -20,13 +21,24 @@ export const InputStyled = styled.input`
    box-sizing: border-box;
    &::placeholder {
       color: ${({ theme }) => theme.textGrey};
+      /* letter-spacing: .2px; */
    }
    &:focus {
       outline: none;
-      transition: .2s;
+      transition: 0.2s;
    }
    &:focus::placeholder {
       opacity: 0;
    }
-   ${(props) => props.border ? additionalStyles : null}
+`;
+
+export const errorStyles = css`
+   background-color: #fff2f2;
+   border: 1px solid tomato;
+`;
+
+export const InputStyled = styled.input`
+   ${inputStyles}
+   ${props => (props.border ? additionalStylesWithBorder : null)}
+   ${props => props.hasError ? errorStyles : null}
 `;

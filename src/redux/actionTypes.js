@@ -1,0 +1,5 @@
+export const SET_CURRENT_COMPONENT = 'SET_CURRENT_COMPONENT';
+
+export const MAIN_FORM = 'MAIN_FORM';
+export const RESULT_PAGE = 'RESULT_PAGE';
+export const ORDER_PAGE = 'ORDER_PAGE';

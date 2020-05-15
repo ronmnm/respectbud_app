@@ -27,7 +27,7 @@ const WhiteSection = () => {
       <WhiteStyled>
          <div className="white_section_wrapper">
             <MapSection />
-            <CalculateForm />
+            <CalculateForm  />
          </div>
       </WhiteStyled>
    );

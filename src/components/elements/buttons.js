@@ -29,6 +29,7 @@ export const GreyButton = styled(PrimaryButton)`
    color: ${({ theme }) => theme.textBlack};
    &:hover{
       background-color:  ${({ theme }) => theme.grey};
+      border: 1px solid ${({ theme }) => theme.black};
    }
    &:active{
       transition: 0s;
