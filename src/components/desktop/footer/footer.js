@@ -4,11 +4,11 @@ import styled from 'styled-components';
 const FooterStyled = styled.div`
    background-color: ${({ theme }) => theme.black};
    height: 40px;
-   position: fixed;
-   bottom: 0;
+   /* position: absolute; */
+   /* bottom: 0; */
    width: 100%;
    .footer_wrapper {
-      width: ${({ theme }) => theme.mainWidth};
+      max-width: ${({ theme }) => theme.mainWidth};
       margin: 0 auto;
       display: grid;
       justify-content: center;

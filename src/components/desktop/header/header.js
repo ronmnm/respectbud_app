@@ -2,8 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const HeaderStyled = styled.div`
-   /* background-color: ${({ theme }) => theme.black}; */
-   height: 128px;
+   /* display: grid; */
+   /* grid-template-rows: minmax(50px, 30vh); */
+   height: 12vh;
+   min-height: 50px;
+   max-height: 130px;
    .header_wrapper {
       display: grid;
       justify-content: space-between;

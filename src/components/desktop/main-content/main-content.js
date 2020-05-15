@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MainSection from './main-section/main-section';
 
 const MainContent = () => {
-   const [currentComponent, setCurrentComponent] = useState('main_section');
+   const [currentComponent] = useState('main_section');
    switch (currentComponent) {
       case 'main_section':
          return <MainSection />
