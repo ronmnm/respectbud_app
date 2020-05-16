@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-// import Select from 'react-select';
 import { InputStyled } from '../../../../elements/input';
+import { Dropdown } from '../../../../elements/dropdown';
+import { connect } from 'react-redux';
+import * as t from '../../../../../redux/actionTypes';
 
 const BlackStyled = styled.div`
    background-color: ${({ theme }) => theme.black};
@@ -13,45 +15,64 @@ const BlackStyled = styled.div`
       column-gap: 15px;
       max-width: ${({ theme }) => theme.mainWidth};
       margin: 0 auto;
-      padding: 0 50px;
-      height: 100%;
-      div {
-         input {
-            width: 100%;
-            height: 48px;
-         }
-      }
+      padding: 35px 50px;
    }
    color: white;
 `;
+const LabelStyled = styled.div`
+   display: inline-block;
+   margin-bottom: 5px;
+   margin-left: 15px;
+   font-size: 14px;
+`;
 
-// const options = [
-//    { value: 'chocolate', label: 'Chocolate' },
-//    { value: 'strawberry', label: 'Strawberry' },
-//    { value: 'vanilla', label: 'Vanilla' },
-// ];
-const BlackSection = () => {
+const BlackSection = ({
+   materialsList,
+   materialsTypeList,
+   setMaterial,
+   setMaterialType,
+   materialTitle,
+   materialTypeTitle,
+}) => {
    return (
       <BlackStyled>
          <div className="black_section_wrapper">
             <div>
-               <div>Материал</div>
-               <InputStyled placeholder='Песок' />
+               <LabelStyled>Материал</LabelStyled>
+               <Dropdown list={materialsList} callback={setMaterial} selectedItem={materialTitle} />
             </div>
             <div>
-               <div>Вид</div>
-               <InputStyled placeholder='а' />
+               <LabelStyled>Вид</LabelStyled>
+               <Dropdown
+                  list={materialsTypeList}
+                  callback={setMaterialType}
+                  selectedItem={materialTypeTitle}
+                  disabled={materialsTypeList}
+               />
             </div>
             <div>
-               <div>Вес (тонн)</div>
-               <InputStyled placeholder='Вес' />
+               <LabelStyled>Вес (тонн)</LabelStyled>
+               <InputStyled placeholder="Вес" />
             </div>
             <div>
-               <div>Объём (м³)</div>
-               <InputStyled placeholder='Обьем' />
+               <LabelStyled>Объём (м³)</LabelStyled>
+               <InputStyled placeholder="Обьем" />
             </div>
          </div>
       </BlackStyled>
    );
 };
-export default BlackSection;
+
+const mapStateToProps = ({ material }) => ({
+   materialTitle: material.materialTitle,
+   materialTypeTitle: material.materialTypeTitle,
+   materialsList: material.materialsList,
+   materialsTypeList: material.materialsTypeList,
+});
+
+const mapDispatchToProps = dispatch => ({
+   setMaterial: (materialTitle, id) => dispatch({ type: t.SET_MATERIAL, payload: materialTitle, id: id }),
+   setMaterialType: (materialTitle, id) => dispatch({ type: t.SET_MATERIAL_TYPE, payload: materialTitle, id: id }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BlackSection);

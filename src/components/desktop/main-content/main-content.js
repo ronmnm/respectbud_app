@@ -3,6 +3,7 @@ import MainSection from './main-section/main-section';
 import { connect } from 'react-redux';
 import * as t from '../../../redux/actionTypes';
 import ResultPage from './result-section/result-page';
+import OrderPage from './order-section/order-page';
 
 const MainContent = ({ currentComponent }) => {
    switch (currentComponent) {
@@ -13,7 +14,7 @@ const MainContent = ({ currentComponent }) => {
          return <ResultPage />
 
       case t.ORDER_PAGE:
-         return <div>order section comp</div>;
+         return <OrderPage />
 
       default:
          return <MainSection />;

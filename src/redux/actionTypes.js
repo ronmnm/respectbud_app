@@ -3,3 +3,6 @@ export const SET_CURRENT_COMPONENT = 'SET_CURRENT_COMPONENT';
 export const MAIN_FORM = 'MAIN_FORM';
 export const RESULT_PAGE = 'RESULT_PAGE';
 export const ORDER_PAGE = 'ORDER_PAGE';
+
+export const SET_MATERIAL = 'SET_MATERIAL'
+export const SET_MATERIAL_TYPE = 'SET_MATERIAL_TYPE'

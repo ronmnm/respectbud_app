@@ -13,7 +13,7 @@ export const inputStyles = css`
    border: none;
    background-color: ${({ theme }) => theme.white};
    font-size: 16px;
-   /* letter-spacing: .2px; */
+   font-weight: 600;
    color: ${({ theme }) => theme.textBlack};
    padding-left: 15px;
    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -21,7 +21,6 @@ export const inputStyles = css`
    box-sizing: border-box;
    &::placeholder {
       color: ${({ theme }) => theme.textGrey};
-      /* letter-spacing: .2px; */
    }
    &:focus {
       outline: none;
