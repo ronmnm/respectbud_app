@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { inputStyles, additionalStylesWithBorder, errorStyles } from '../../../../elements/input';
+import { inputStyles, errorStyles } from '../../../../elements/input';
 import styled from 'styled-components';
 import InputMask from 'react-input-mask';
 
 const InputMaskStyled = styled(InputMask)`
    ${inputStyles}
-   ${additionalStylesWithBorder}
    ${props => props.error ? errorStyles : null}
 `;
 

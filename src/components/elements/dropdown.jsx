@@ -1,9 +1,10 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter';
 
 const disabledStyles = css`
    pointer-events: none;
+   background-color: ${({ theme }) => theme.grey};
    &:hover {
       cursor: default;
    }
@@ -13,19 +14,18 @@ const disabledStyles = css`
       }
    }
 `;
-const DdWrapper = styled.div`
-   background-color: white;
+const DropdownStyled = styled.div`
+   background-color: ${({ theme }) => theme.white};
    height: 48px;
    line-height: 48px;
    width: 100%;
    font-size: 16px;
+   font-weight: 500;
    color: ${({ theme }) => theme.textBlack};
    position: relative;
-
    &:hover {
       cursor: pointer;
    }
-
    .dropdown_header {
       display: grid;
       grid-template-columns: 1fr 48px;
@@ -72,7 +72,7 @@ const SvgArrow = styled.div`
       if (disabled === null) {
          return css`
             svg {
-               fill: white;
+               fill: ${({ theme }) => theme.grey};
             }
          `;
       }
@@ -88,7 +88,7 @@ export function Dropdown({ list, disabled, callback, selectedItem }) {
       toggleList();
    }
    return (
-      <DdWrapper ref={ref} selectedItem={selectedItem} disabled={disabled}>
+      <DropdownStyled ref={ref} selectedItem={selectedItem} disabled={disabled}>
          <div className="dropdown_header" onClick={toggleList}>
             <div className="dropdown_header_title">{selectedItem || 'Выбрать'}</div>
             <SvgArrow listOpen={visible} disabled={disabled}>
@@ -104,7 +104,7 @@ export function Dropdown({ list, disabled, callback, selectedItem }) {
                ))}
             </ul>
          )}
-      </DdWrapper>
+      </DropdownStyled>
    );
 }
 
@@ -117,7 +117,6 @@ const Svg = () => {
          x="0px"
          y="0px"
          viewBox="0 0 240.823 240.823"
-         // style="enable-background:new 0 0 240.823 240.823;"
          xmlSpace="preserve">
          <g>
             <path

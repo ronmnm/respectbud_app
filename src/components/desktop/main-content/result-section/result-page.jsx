@@ -11,8 +11,9 @@ const ResultStyled = styled.div`
    /* width: 600px; */
    height: 300px;
    /* background-color: lightseagreen; */
-   padding-bottom: 100px;
+   /* padding-bottom: 100px; */
    margin: auto;
+   padding: 0 50px 120px 50px;
    h1{
       font-size: 32px;
       font-weight: 500;
@@ -34,17 +35,20 @@ const ResultStyled = styled.div`
 `;
 
 const ResultPage = ({ dispatch }) => {
-   const handleBack = e => {
-      e.preventDefault();
+   const handleBack = () => {
       dispatch({type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM})
    };
+   const handleProceedToOrder = () => {
+      dispatch({type: t.SET_CURRENT_COMPONENT, payload: t.ORDER_PAGE})
+   }
    return (
       <ResultStyled>
          <h1>Результат</h1>
          <h3>Цена с доставкой составляет: <span>12345 грн</span> </h3>
          <div className="buttons_wrap">
-            <div><PrimaryButton>Заказать</PrimaryButton></div>
-            <div onClick={handleBack}><GreyButton>Рассчитать заново</GreyButton></div>
+         <div><GreyButton onClick={handleBack}>Рассчитать заново</GreyButton></div>
+            <div><PrimaryButton onClick={handleProceedToOrder}>Заказать</PrimaryButton></div>
+            
          </div>
       </ResultStyled>
    );

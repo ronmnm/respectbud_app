@@ -5,9 +5,9 @@ import { InputStyled } from '../../../../elements/input';
 import PhoneInput from './phone-input';
 import { connect } from 'react-redux';
 import * as t from '../../../../../redux/actionTypes';
+import { Dropdown } from '../../../../elements/dropdown';
 
 const CalculateFormStyled = styled.div`
-   /* background-color: lightcyan; */
    width: 100%;
    display: grid;
    align-items: center;
@@ -21,13 +21,11 @@ const CalculateFormStyled = styled.div`
          display: grid;
          align-items: flex-end;
          grid-template-rows: repeat(3, 1fr);
-         input {
-            width: 100%;
-         }
          .input_label {
             display: inline-block;
             margin-bottom: 5px;
-            margin-left: 5px;
+            margin-left: 15px;
+            font-size: 14px;
          }
       }
    }
@@ -54,7 +52,12 @@ const CalculateForm = ({ dispatch }) => {
             <div className="calculate_form_column">
                <div>
                   <span className="input_label">Форма оплаты</span>
-                  <InputStyled border placeholder="Наличный расчет " />
+                  <Dropdown
+                     list={[
+                        { title: 'Наличный расчет ', id: 0 },
+                        { title: 'Безналичный расчет ', id: 1 },
+                     ]}
+                  />
                </div>
                <div>
                   <span className="input_label">Адрес</span>
