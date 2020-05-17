@@ -9,11 +9,18 @@ export const useOutsideAlerter = (initialValue) => {
          setVisible(false)
       }
    }
+   function handleEscapePress(keyboardEvent) {
+      if(keyboardEvent.key === 'Escape'){
+         setVisible(false)
+      }
+   }
 
    useEffect(() => {
       document.addEventListener('click', handleClickOutside, true);
+      document.addEventListener('keydown', handleEscapePress, true);
       return () => {
          document.removeEventListener('click', handleClickOutside, true);
+         document.removeEventListener('keydown', handleEscapePress, true);
       }
    }, [ref])
 

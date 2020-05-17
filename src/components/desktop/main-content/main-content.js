@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import MainSection from './main-section/main-section';
 import { connect } from 'react-redux';
 import * as t from '../../../redux/actionTypes';
