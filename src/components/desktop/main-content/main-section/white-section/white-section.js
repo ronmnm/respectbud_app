@@ -4,8 +4,6 @@ import MapSection from './map';
 import CalculateForm from './calculate-form';
 
 const WhiteStyled = styled.div`
-   /* display: grid; */
-   /* height: 100%; */
    
    .white_section_wrapper {
       display: grid;
@@ -22,12 +20,12 @@ const WhiteStyled = styled.div`
       margin: 50px;
    }
 `;
-const WhiteSection = () => {
+const WhiteSection = ({whiteSection}) => {
    return (
       <WhiteStyled>
          <div className="white_section_wrapper">
             <MapSection />
-            <CalculateForm  />
+            <CalculateForm {...whiteSection} />
          </div>
       </WhiteStyled>
    );

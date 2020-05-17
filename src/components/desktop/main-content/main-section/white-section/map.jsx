@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const MapStyed = styled.div`
-   background-color: lightskyblue;
+   /* background-color: lightskyblue; */
    width: 100%;
    height: 100%;
    display: grid;
@@ -10,11 +10,11 @@ const MapStyed = styled.div`
       display: grid;
       grid-template-rows: 30px 1fr;
       margin: 30px 0;
-      background-color: lightgreen;
+      /* background-color: lightgreen; */
 
          
       .map {
-         background-color: lightpink;
+         /* background-color: lightpink; */
       }
    }
 `;

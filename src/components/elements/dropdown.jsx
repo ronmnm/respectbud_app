@@ -45,7 +45,7 @@ const DropdownStyled = styled.div`
       background-color: ${({ theme }) => theme.white};
       position: relative;
       top: -2px;
-      max-height: 300px;
+      max-height: 250px;
       overflow-y: auto;
       li {
          padding-left: 15px;
@@ -54,7 +54,24 @@ const DropdownStyled = styled.div`
          }
       }
    }
-   ${({ disabled }) => (disabled === null ? disabledStyles : null)}
+   ${({ disabled }) => (disabled === null ? disabledStyles : null)};
+   ${({ withBorder, borderActive }) => {
+      if (withBorder) {
+         if (borderActive) {
+            return css`
+               .dropdown_header {
+                  border: 1px solid ${({ theme }) => theme.black};
+               }
+            `;
+         } else {
+            return css`
+               .dropdown_header {
+                  border: 1px solid ${({ theme }) => theme.darkGrey};
+               }
+            `;
+         }
+      }
+   }};
 `;
 
 const SvgArrow = styled.div`
@@ -79,7 +96,7 @@ const SvgArrow = styled.div`
    }}
 `;
 
-export function Dropdown({ list, disabled, callback, selectedItem }) {
+export function Dropdown({ list, disabled, callback, selectedItem, withBorder }) {
    const { visible, setVisible, ref } = useOutsideAlerter(false);
    const toggleList = () => setVisible(!visible);
 
@@ -88,7 +105,12 @@ export function Dropdown({ list, disabled, callback, selectedItem }) {
       toggleList();
    }
    return (
-      <DropdownStyled ref={ref} selectedItem={selectedItem} disabled={disabled}>
+      <DropdownStyled
+         ref={ref}
+         selectedItem={selectedItem}
+         disabled={disabled}
+         withBorder={withBorder}
+         borderActive={visible}>
          <div className="dropdown_header" onClick={toggleList}>
             <div className="dropdown_header_title">{selectedItem || 'Выбрать'}</div>
             <SvgArrow listOpen={visible} disabled={disabled}>

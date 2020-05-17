@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import logo from '../../../img/logo.png';
 
 const HeaderStyled = styled.div`
    /* display: grid; */
@@ -19,9 +20,12 @@ const HeaderStyled = styled.div`
    }
 `;
 const LogoHeader = styled.div`
-   background-color: yellow;
-   width: 30px;
-   height: 30px;
+   height: 100%;
+   display: grid;
+   align-items: center;
+   img {
+      height: 60%;
+   }
 `;
 const PhonesHeader = styled.div`
    background-color: red;
@@ -31,7 +35,9 @@ const Header = () => {
    return (
       <HeaderStyled>
          <div className="header_wrapper">
-            <LogoHeader>Logo</LogoHeader>
+            <LogoHeader>
+               <img src={logo} alt="" />
+            </LogoHeader>
             <PhonesHeader>096-999-99-00</PhonesHeader>
          </div>
       </HeaderStyled>

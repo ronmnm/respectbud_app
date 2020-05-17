@@ -35,21 +35,14 @@ const BlackSection = ({
    materialTypeTitle,
    materialWeight,
    materialVolume,
-   // handleMaterialWeight,
-   // handleMaterialVolume,
    dispatch
 }) => {
    const handleMaterialWeight = (value) => {
       dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: +value})
-      // const calculatedVolume = value * 0.625;
-      // dispatch({ type: t.SET_MATERIAL_VOLUME, payload: calculatedVolume })
    }
 
    const handleMaterialVolume = (value) => {
       dispatch({ type: t.SET_MATERIAL_VOLUME, payload: value })
-      // console.log(value * 1.6);
-      // const calculatedWeight = Math.ceil(value * 1.6);
-      // dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: calculatedWeight })
    }
    return (
       <BlackStyled>
@@ -70,12 +63,12 @@ const BlackSection = ({
             <div>
                <LabelStyled>Вес (тонн)</LabelStyled>
                <InputStyled
-                  // type='number'
                   value={materialWeight || ''}
                   onChange={e => handleMaterialWeight(e.target.value)}
                   disabledInput={!materialTypeTitle}
                   placeholder="Вес"
                   step="1"
+                  type='number'
                />
             </div>
             <div>
@@ -86,7 +79,6 @@ const BlackSection = ({
                   disabledInput={!materialTypeTitle}
                   placeholder="Обьем"
                   type='number'
-                  // step="1"
                />
             </div>
          </div>
@@ -94,21 +86,12 @@ const BlackSection = ({
    );
 };
 
-const mapStateToProps = ({ material }) => ({
-   materialTitle: material.materialTitle,
-   materialTypeTitle: material.materialTypeTitle,
-   materialsList: material.materialsList,
-   materialsTypeList: material.materialsTypeList,
-   materialWeight: material.materialWeight,
-   materialVolume: material.materialVolume,
-});
+
 
 const mapDispatchToProps = dispatch => ({
    setMaterial: (materialTitle, id) => dispatch({ type: t.SET_MATERIAL, payload: materialTitle, id: id }),
    setMaterialType: (materialTitle, id) => dispatch({ type: t.SET_MATERIAL_TYPE, payload: materialTitle, id: id }),
-   // handleMaterialWeight: value => dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: value }),
-   // handleMaterialVolume: value => dispatch({ type: t.SET_MATERIAL_VOLUME, payload: value }),
    dispatch: dispatch
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BlackSection);
+export default connect(null, mapDispatchToProps)(BlackSection);

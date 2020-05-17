@@ -52,9 +52,16 @@ export const inputStyles = css`
    }
 `;
 
+const dateInputStyling = css`
+   color: red;
+   font-family: 'Roboto', sans-serif;
+`;
+
 export const InputStyled = styled.input`
    ${inputStyles}
    ${({ border }) => (border ? null : additionalStylesWithBlackBorder)}
    ${({ hasError }) => (hasError ? errorStyles : null)}
    ${({ disabledInput }) => (disabledInput ? disabledStyles : null)}
+   ${({ type }) => (type === 'date' ? dateInputStyling : null)}
+
 `;

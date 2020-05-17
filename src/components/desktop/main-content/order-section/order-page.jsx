@@ -3,17 +3,22 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 import * as t from '../../../../redux/actionTypes';
 import { PrimaryButton } from '../../../elements/buttons';
-import { InputStyled } from '../../../elements/input';
+import { InputStyled, inputStyles } from '../../../elements/input';
 import Modal from '../../../elements/modal';
 import { useOutsideAlerter } from '../../../../hooks/outsideAlerter';
+import DatePicker, { registerLocale } from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
+import ru from 'date-fns/locale/ru';
+import { Dropdown } from '../../../elements/dropdown';
+import PhoneInput from '../../../elements/phone-input';
+registerLocale('ru', ru);
 
 const OrderPageStyled = styled.div`
-   /* background-color: lightskyblue; */
-   /* height: 300px; */
    max-width: 700px;
+   width: 75vw;
    margin: auto;
    display: grid;
-   /* padding-bottom: 70px; */
    padding: 0 50px 100px 50px;
    h1 {
       text-align: center;
@@ -31,6 +36,9 @@ const OrderPageStyled = styled.div`
          grid-template-rows: repeat(3, 1fr);
          align-items: flex-end;
          row-gap: 5px;
+         .react-datepicker-wrapper {
+            width: 100%;
+         }
          .text_area_wrapper {
             height: 100%;
             display: grid;
@@ -64,9 +72,10 @@ const OrderPageStyled = styled.div`
             }
          }
          div {
+            /* display: grid; */
          }
          .input_label {
-            display: inline-block;
+            display: block;
             margin-bottom: 5px;
             margin-left: 15px;
             color: ${({ theme }) => theme.textGrey};
@@ -77,13 +86,15 @@ const OrderPageStyled = styled.div`
 
 const ModalContentStyled = styled.div`
    display: grid;
-   grid-template-rows: min-content 3fr 1fr;
+   grid-template-rows: min-content 3fr 135px;
    height: 100%;
    .modal_top {
       display: grid;
       padding: 20px;
+      height: 60px;
       .close_cross {
          justify-self: flex-end;
+         height: fit-content;
          svg {
             stroke: ${({ theme }) => theme.black};
          }
@@ -103,7 +114,7 @@ const ModalContentStyled = styled.div`
       h1 {
          font-size: 24px;
          font-weight: 400;
-         margin-bottom: 80px;
+         margin-bottom: 50px;
       }
       p {
          font-size: 18px;
@@ -111,17 +122,29 @@ const ModalContentStyled = styled.div`
          font-weight: 300;
       }
    }
-   .modal_button{
+   .modal_button {
       padding: 50px;
    }
 `;
 
-
-const OrderPage = ({ backToMain }) => {
+const DatePickerStyled = styled(DatePicker)`
+   ${inputStyles}
+`;
+const OrderPage = ({
+   backToMain,
+   setDeliveryDate,
+   deliveryDate,
+   setDeliveryTime,
+   deliveryTime,
+   phoneOnUnloading,
+   setPhone,
+   orderComment,
+   setComment,
+}) => {
    const { visible, setVisible, ref } = useOutsideAlerter(false);
-   
-   function makeOrderClick(){
-      setVisible(true)
+   // console.log(deliveryDate);
+   function makeOrderClick() {
+      setVisible(true);
    }
    return (
       <OrderPageStyled>
@@ -130,24 +153,57 @@ const OrderPage = ({ backToMain }) => {
             <div className="order_column">
                <div>
                   <span className="input_label">Дата доставки</span>
-                  <InputStyled border placeholder="Дата доставки" />
+                  <DatePickerStyled
+                     placeholderText="Выберете дату"
+                     selected={deliveryDate || ''}
+                     minDate={new Date()}
+                     locale="ru"
+                     dateFormat="dd-MM-yyyy"
+                     onChange={date => {
+                        setDeliveryDate(date);
+                     }}></DatePickerStyled>
                </div>
                <div>
                   <span className="input_label">Время доставки</span>
-                  <InputStyled border placeholder="Время доставки" />
+                  <Dropdown
+                     callback={(title, id) => setDeliveryTime(title)}
+                     selectedItem={deliveryTime}
+                     withBorder={true}
+                     list={[
+                        { title: '09:00', id: 0 },
+                        { title: '10:00', id: 1 },
+                        { title: '11:00', id: 2 },
+                        { title: '12:00', id: 3 },
+                        { title: '13:00', id: 4 },
+                        { title: '14:00', id: 5 },
+                        { title: '15:00', id: 6 },
+                        { title: '16:00', id: 7 },
+                        { title: '17:00', id: 8 },
+                        { title: '18:00', id: 9 },
+                        { title: '19:00', id: 10 },
+                     ]}
+                  />
                </div>
                <div>
                   <span className="input_label">Телефон на выгрузке</span>
-                  <InputStyled border placeholder="Телефон на выгрузке" />
+                  <PhoneInput border placeholder="Телефон на выгрузке" value={phoneOnUnloading} onChange={setPhone} />
                </div>
             </div>
             <div className="order_column">
                <div className="text_area_wrapper">
                   <span className="input_label">Добавить коментарий</span>
-                  <textarea placeholder="вези быстрее!" className="text_area"></textarea>
+                  <textarea
+                     placeholder="Комент"
+                     value={orderComment || ''}
+                     onChange={e => setComment(e.target.value)}
+                     className="text_area"></textarea>
                </div>
                <div>
-                  <PrimaryButton onClick={makeOrderClick}>Оформить заказ</PrimaryButton>
+                  <PrimaryButton
+                     primaryDisable={!deliveryDate || !deliveryTime || phoneOnUnloading.length !== 19 || !orderComment}
+                     onClick={makeOrderClick}>
+                     Оформить заказ
+                  </PrimaryButton>
                </div>
             </div>
          </div>
@@ -164,7 +220,10 @@ const OrderPage = ({ backToMain }) => {
                <div className="modal_content">
                   <div>
                      <h1>Благодарим за заказ!</h1>
-                     <p>Наш менеджер свяжется с вами<br />в течении 10 минут.</p>
+                     <p>
+                        Наш менеджер свяжется с вами
+                        <br />в течении 10 минут.
+                     </p>
                   </div>
                </div>
                <div className="modal_button">
@@ -178,5 +237,15 @@ const OrderPage = ({ backToMain }) => {
 
 const mapDispatchToProps = dispatch => ({
    backToMain: () => dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM }),
+   setDeliveryDate: value => dispatch({ type: t.SET_DELIVERY_DATE, payload: value }),
+   setDeliveryTime: value => dispatch({ type: t.SET_DELIVERY_TIME, payload: value }),
+   setPhone: value => dispatch({ type: t.SET_PHONE_ON_UNLOADING, payload: value }),
+   setComment: value => dispatch({ type: t.SET_ORDER_COMMENT, payload: value }),
 });
-export default connect(null, mapDispatchToProps)(OrderPage);
+const mapStateToProps = ({ order }) => ({
+   deliveryDate: order.deliveryDate,
+   deliveryTime: order.deliveryTime,
+   phoneOnUnloading: order.phoneOnUnloading,
+   orderComment: order.orderComment,
+});
+export default connect(mapStateToProps, mapDispatchToProps)(OrderPage);

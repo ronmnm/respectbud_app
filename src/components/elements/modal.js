@@ -10,9 +10,9 @@ const ModalWrapper = styled.div`
    left: 0;
    right: 0;
    z-index: 99;
-   display: grid;
-   justify-content: center;
-   align-items: center;
+   /* display: grid; */
+   /* justify-content: center; */
+   /* align-items: center; */
 `;
 const fadeIn = keyframes`
    0% {opacity:0;}
@@ -27,6 +27,10 @@ const ModalBackdrop = styled.div`
    background-color: rgba(0, 0, 0, 0.3);
 `;
 const ModalWindow = styled.div`
+   position: relative;
+   top: 46%;
+   left: 50%;
+   transform: translate(-50%, -50%);
    margin-bottom: 40px;
    height: 75vh;
    max-height: 590px;

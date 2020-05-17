@@ -4,11 +4,10 @@ const activeComponentsState = {
    currentComponent: t.MAIN_FORM,
 };
 
-function activeComponentsReducer(state = activeComponentsState, action) {
+export function activeComponentsReducer(state = activeComponentsState, action) {
    switch (action.type) {
       case t.SET_CURRENT_COMPONENT:
          return { ...state, currentComponent: action.payload };
-
       default:
          return state;
    }
@@ -73,9 +72,15 @@ const materialSelectionState = {
 
    materialWeight: null,
    materialVolume: null,
+
+   customerName: null,
+   customerOrganization: null,
+   customerPhone: 0,
+   customerPaymentMethod: null,
+   customerAddress: null,
 };
 
-export function materialSelectionReducer(state = materialSelectionState, action) {
+export function firstPageReducer(state = materialSelectionState, action) {
    switch (action.type) {
       case t.SET_MATERIAL:
          return {
@@ -104,9 +109,54 @@ export function materialSelectionReducer(state = materialSelectionState, action)
          const newWeight = Math.ceil(action.payload * state.m3InTon);
          console.log(action.payload * state.m3InTon);
          return { ...state, materialVolume: action.payload, materialWeight: newWeight };
+
+      case t.SET_CUSTOMER_NAME:
+         return { ...state, customerName: action.payload };
+      case t.SET_CUSTOMER_ORGANIZATION:
+         return { ...state, customerOrganization: action.payload };
+      case t.SET_CUSTOMER_PHONE:
+         return { ...state, customerPhone: action.payload };
+      case t.SET_CUSTOMER_PAYMENT_METHOD:
+         return { ...state, customerPaymentMethod: action.payload };
+      case t.SET_CUSTOMER_ADDRESS:
+         return { ...state, customerAddress: action.payload };
       default:
          return state;
    }
 }
 
-export default activeComponentsReducer;
+const orderPageInitialState = {
+   deliveryDate: null,
+   deliveryDateHuman: null,
+   deliveryTime: null,
+   phoneOnUnloading: 0,
+   orderComment: null,
+};
+
+export const orderDataReducer = (state = orderPageInitialState, action) => {
+   switch (action.type) {
+      case t.SET_DELIVERY_DATE:
+         let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+         return {
+            ...state,
+            deliveryDate: action.payload,
+            deliveryDateHuman: action.payload.toLocaleString('ru-RU', options),
+         };
+      case t.SET_DELIVERY_TIME:
+         return { ...state, deliveryTime: action.payload };
+      case t.SET_PHONE_ON_UNLOADING:
+         return { ...state, phoneOnUnloading: action.payload };
+      case t.SET_ORDER_COMMENT:
+         return { ...state, orderComment: action.payload };
+      default:
+         return state;
+   }
+};
+
+// const
+// export function customerReducer(state = customerInitialState, action) {
+//    switch (action.type) {
+//       default:
+//          return state;
+//    }
+// }
