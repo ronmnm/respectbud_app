@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../../../img/logo.png';
+import { Svg7 } from '../../../static/7';
 
 const HeaderStyled = styled.div`
    /* display: grid; */
@@ -28,7 +29,27 @@ const LogoHeader = styled.div`
    }
 `;
 const PhonesHeader = styled.div`
-   background-color: red;
+   height: 50px;
+   grid-auto-flow: column;
+   display: grid;
+   align-items: center;
+   svg {
+      margin-right: 9px;
+      height: 15px;
+      width: 15px;
+   }
+   div {
+      font-size: 16px;
+      letter-spacing: 0.2px;
+      font-weight: 300;
+      span {
+         transition: 0.2s;
+         &:hover {
+            color: ${({ theme }) => theme.yellowHover};
+            cursor: pointer;
+         }
+      }
+   }
 `;
 
 const Header = () => {
@@ -38,7 +59,12 @@ const Header = () => {
             <LogoHeader>
                <img src={logo} alt="" />
             </LogoHeader>
-            <PhonesHeader>096-999-99-00</PhonesHeader>
+            <PhonesHeader>
+               <Svg7 phoneIcon />
+               <div>
+                  <span>0957061098</span> / <span>0637080785</span>
+               </div>
+            </PhonesHeader>
          </div>
       </HeaderStyled>
    );
