@@ -6,10 +6,7 @@ import PhoneInput from '../../elements/phone-input';
 import { PrimaryButton } from '../../elements/buttons';
 import { connect } from 'react-redux';
 import * as t from '../../../redux/actionTypes';
-import { setUserToLocalStorage } from '../../../utils/utils';
-
-// firebase
-import { firestore } from '../../../firebase';
+import { registerNewCustomer } from '../../../services/register';
 
 export const AnketaPageStyled = styled.div`
    height: 100%;
@@ -34,30 +31,12 @@ export const LabelStyled = styled.span`
 `;
 
 function AnketaPage({ customerName, customerPhone, customerOrganization, dispatch }) {
-   async function handleNextClick() {
-      setUserToLocalStorage(customerName, customerPhone);
 
-      const dataObj = {
-         customerName,
-         customerPhone,
-      };
+   function handleNextClick() {
+      registerNewCustomer(customerName, customerPhone, customerOrganization)
+
       dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.VYBOR_TOVARA_PAGE });
-      const docRef = await firestore
-         .collection('users-test')
-         .doc(`${customerName} - ${customerPhone.substr(3)}`)
-         .set(
-            {
-               customerName: customerName,
-               customerPhone: customerPhone,
-               customerOrganization: customerOrganization,
-               platform: navigator.platform,
-               timestamp: new Date().toLocaleString(),
-               
-            },
-            { merge: true }
-         );
-      console.log(docRef);
-      // const document = await docRef.get();
+      
    }
 
    return (

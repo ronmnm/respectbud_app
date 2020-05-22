@@ -6,7 +6,7 @@ import PhoneInput from '../../../../elements/phone-input';
 import { connect } from 'react-redux';
 import * as t from '../../../../../redux/actionTypes';
 import { Dropdown } from '../../../../elements/dropdown';
-import { setUserToLocalStorage } from '../../../../../utils/utils';
+import { registerNewCustomer } from '../../../../../services/register';
 
 const CalculateFormStyled = styled.div`
    width: 100%;
@@ -71,7 +71,7 @@ const CalculateForm = ({
    ];
 
    function handleCalculateClick() {
-      setUserToLocalStorage(customerName, customerPhone)
+      registerNewCustomer(customerName, customerPhone, customerOrganization)
 
       dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE })
    }

@@ -8,10 +8,7 @@ const ResultStyled = styled.div`
    display: grid;
    justify-content: center;
    align-items: center;
-   /* width: 600px; */
-   height: 300px;
-   /* background-color: lightseagreen; */
-   /* padding-bottom: 100px; */
+   height: 350px;
    margin: auto;
    padding: 0 50px 120px 50px;
    h1{
