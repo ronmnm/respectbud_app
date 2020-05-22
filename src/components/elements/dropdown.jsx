@@ -20,7 +20,7 @@ const DropdownStyled = styled.div`
    line-height: 48px;
    width: 100%;
    font-size: 16px;
-   font-weight: 500;
+   font-weight: 400;
    color: ${({ theme }) => theme.textBlack};
    position: relative;
    &:hover {
@@ -33,7 +33,7 @@ const DropdownStyled = styled.div`
       border-bottom: none;
       padding-left: 15px;
       .dropdown_header_title {
-         color: ${({ theme, selectedItem }) => (selectedItem ? theme.textBlack : theme.textGrey)};
+         color: ${({ theme, selectedItem }) => (selectedItem ? theme.textBlack : theme.textLightGrey)};
       }
       .svg_arrow_wrapper {
       }

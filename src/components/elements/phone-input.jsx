@@ -25,6 +25,7 @@ const PhoneInput = ({value, onChange}) => {
    }
    return (
       <InputMaskStyled
+         type='tel'
          error={error}
          mask="+38 (099) 999-99-99"
          value={value || ''}

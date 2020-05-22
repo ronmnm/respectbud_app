@@ -15,7 +15,7 @@ import PhoneInput from '../../../elements/phone-input';
 registerLocale('ru', ru);
 
 const OrderPageStyled = styled.div`
-   max-width: 700px;
+   max-width: 800px;
    width: 75vw;
    margin: auto;
    display: grid;
@@ -161,7 +161,7 @@ const OrderPage = ({
                      dateFormat="dd-MM-yyyy"
                      onChange={date => {
                         setDeliveryDate(date);
-                     }}></DatePickerStyled>
+                     }} />
                </div>
                <div>
                   <span className="input_label">Время доставки</span>
@@ -200,7 +200,7 @@ const OrderPage = ({
                </div>
                <div>
                   <PrimaryButton
-                     primaryDisable={!deliveryDate || !deliveryTime || phoneOnUnloading.length !== 19 || !orderComment}
+                     // primaryDisable={!deliveryDate || !deliveryTime || phoneOnUnloading.length !== 19 || !orderComment}
                      onClick={makeOrderClick}>
                      Оформить заказ
                   </PrimaryButton>

@@ -102,12 +102,11 @@ export function firstPageReducer(state = materialSelectionState, action) {
          };
 
       case t.SET_MATERIAL_WEIGHT:
-         const newVolume = action.payload * state.oneTonInM3;
+         const newVolume = (action.payload * state.oneTonInM3).toFixed(3);
          return { ...state, materialWeight: action.payload, materialVolume: newVolume };
 
       case t.SET_MATERIAL_VOLUME:
          const newWeight = Math.ceil(action.payload * state.m3InTon);
-         console.log(action.payload * state.m3InTon);
          return { ...state, materialVolume: action.payload, materialWeight: newWeight };
 
       case t.SET_CUSTOMER_NAME:

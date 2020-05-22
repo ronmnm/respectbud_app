@@ -24,7 +24,7 @@ const disabledStyles = css`
 `;
 
 export const inputStyles = css`
-   height: 47px;
+   height: 48px;
    width: 100%;
    background-color: ${({ theme }) => theme.white};
    font-size: 16px;
@@ -36,7 +36,7 @@ export const inputStyles = css`
    box-sizing: border-box;
    border: 1px solid ${({ theme }) => theme.darkGrey};
    &::placeholder {
-      color: ${({ theme }) => theme.textGrey};
+      color: ${({ theme }) => theme.textLightGrey};
    }
    &:focus {
       outline: none;

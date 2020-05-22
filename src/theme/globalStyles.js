@@ -4,6 +4,9 @@ export const GlobalStyles = createGlobalStyle`
    *{
       margin: 0;
       padding: 0;
+      -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+      -moz-box-sizing: border-box; /* Firefox, other Gecko */
+      box-sizing: border-box;
       &:focus{
          outline: none;
       }
