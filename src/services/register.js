@@ -15,7 +15,7 @@ export async function registerNewCustomer(name, phone, organization) {
     };
 
     try {
-      await firestore.collection('users-test').doc(phone.substr(3)).set(data, { merge: true });
+      await firestore.collection('customers').doc(phone.substr(3)).set(data, { merge: true });
     } catch (e) {
       console.error(e);
     }
