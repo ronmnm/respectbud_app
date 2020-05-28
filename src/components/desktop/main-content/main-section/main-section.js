@@ -25,7 +25,7 @@ const mapStateToProps = ({ firstPage }) => ({
       customerOrganization: firstPage.customerOrganization,
       customerPhone: firstPage.customerPhone,
       customerPaymentMethod: firstPage.customerPaymentMethod,
-      customerAddress: firstPage.customerAddress,
+      addr: firstPage.customerAddress,
    },
    blackSection: {
       materialTitle: firstPage.materialTitle,

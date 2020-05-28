@@ -6,39 +6,34 @@ import * as t from './redux/actionTypes';
 import { firestore } from './services/firebase';
 import { connect } from 'react-redux';
 
-
-
 function App({ dispatch }) {
-   const isMobile = typeof window.orientation !== 'undefined' || navigator.userAgent.indexOf('IEMobile') !== -1;
+  const isMobile = typeof window.orientation !== 'undefined' || navigator.userAgent.indexOf('IEMobile') !== -1;
 
-   function checkIfLoggedIn() {
-      const storage = JSON.parse(localStorage.getItem('customerData'));
-      if (storage) {
-         dispatch({type: t.SET_CUSTOMER_NAME, payload: storage.name})
-         dispatch({type: t.SET_CUSTOMER_PHONE, payload: storage.phone})
-         dispatch({type: t.SET_CUSTOMER_ORGANIZATION, payload: storage.organization})
-      }
-   }
+  function checkIfLoggedIn() {
+    const storage = JSON.parse(localStorage.getItem('customerData'));
+    if (storage) {
+      dispatch({ type: t.SET_CUSTOMER_NAME, payload: storage.name });
+      dispatch({ type: t.SET_CUSTOMER_PHONE, payload: storage.phone });
+      dispatch({ type: t.SET_CUSTOMER_ORGANIZATION, payload: storage.organization });
+    }
+  }
 
+  useEffect(() => {
+    checkIfLoggedIn();
 
-   useEffect(() => {
-      checkIfLoggedIn();
+    // (function fetchData() {
+    //   let snapshot = firestore.collection('suppliers').get();
+    //   const res = snapshot.then(snapshot => {
+    //       return snapshot.forEach(doc => {
+    //         // console.log(doc.data());
+    //       });
+    //     });
+      
+    // })();
+  });
 
-      // (async function fetchData() {
-      //    let snapshot = await firestore.collection('users-test').get();
-
-      //    snapshot.forEach(doc => {
-      //       const id = doc.id;
-      //       const data = doc.data();
-
-      //       console.log({ id, data });
-      //       console.log(doc);
-      //    });
-      // })();
-   });
-
-   if (isMobile) return <Mobile />;
-   return <Desktop />;
+  if (isMobile) return <Mobile />;
+  return <Desktop />;
 }
 
 export default connect()(App);

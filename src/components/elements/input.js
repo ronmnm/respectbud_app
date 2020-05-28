@@ -31,9 +31,6 @@ export const inputStyles = css`
    font-weight: 500;
    color: ${({ theme }) => theme.textBlack};
    padding-left: 15px;
-   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-   -moz-box-sizing: border-box; /* Firefox, other Gecko */
-   box-sizing: border-box;
    border: 1px solid ${({ theme }) => theme.darkGrey};
    &::placeholder {
       color: ${({ theme }) => theme.textLightGrey};
