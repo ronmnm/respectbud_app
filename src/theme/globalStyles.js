@@ -1,34 +1,38 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
-   *{
+  *{
       margin: 0;
       padding: 0;
       -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
       -moz-box-sizing: border-box; /* Firefox, other Gecko */
       box-sizing: border-box;
       &:focus{
-         outline: none;
+        outline: none;
       }
-   }
-   html{
+  }
+  html{
       height: 100%;
-   }
-   body{
+  }
+  body{
       height: 100%;
       background-color: ${({ theme }) => theme.white};
       font-family: 'Roboto', sans-serif;
       font-size: 13px;
       /* overflow: hidden; */
-   }
-   #root{
+  }
+  #root{
       height: 100%;
       display: grid;
       grid-template-rows: min-content 1fr min-content;
-   }
-   ul, li{
+  }
+  ul, li{
       margin: 0;
       padding: 0;
       list-style: none;
-   }
+  }
+  a{
+    text-decoration: none;
+    
+  }
 `;
