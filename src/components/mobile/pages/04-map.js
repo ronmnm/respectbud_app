@@ -7,52 +7,59 @@ import { connect } from 'react-redux';
 import { LabelStyled } from './01-anketa';
 import { InputStyled } from '../../elements/input';
 import * as t from '../../../redux/actionTypes';
+import MapComponent from '../../desktop/main-content/main-section/white-section/map';
+import { NavLink } from 'react-router-dom';
+import InputPlaces from '../../desktop/main-content/main-section/white-section/places-input';
 
 const MapStyled = styled(AnketaPageStyled)`
-   .map_wrapper {
-      height: 30vh;
-      background-color: #eee;
-   }
+  .content_wrapper {
+    align-self: flex-start;
+    .map_wrapper {
+      height: 48vh;
+      margin: 0;
+    }
+  }
 `;
 
-function MapPage({ dispatch, customerAddress }) {
-   function handleNextClick() {
-      dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.MAP_PAGE });
-   }
+function MapPage({ dispatch, customerAddress, selectedCoordinates }) {
+  return (
+    <MapStyled>
+      <MobileHeader title="Адрес доставки" />
+      <div className="content_wrapper">
+        <div className="input_field_wrapper">
+          <InputPlaces address={customerAddress} dispatch={dispatch} />
+          {/* <InputStyled
+            value={customerAddress || ''}
+            onChange={e => dispatch({ type: t.SET_CUSTOMER_ADDRESS, payload: e.target.value })}
+            placeholder="Введите адрес"
+            border
+          /> */}
+        </div>
+        <div className="map_wrapper">
+          <MapComponent style={{height: '100%'}} />
+        </div>
+      </div>
 
-   return (
-      <MapStyled>
-         <MobileHeader title="Адрес доставки" />
-         <div>
-            <div className="input_field_wrapper">
-               <InputStyled
-                  value={customerAddress || ''}
-                  onChange={e => dispatch({ type: t.SET_CUSTOMER_ADDRESS, payload: e.target.value })}
-                  placeholder="Введите адрес"
-                  border
-               />
-            </div>
-            <div className="map_wrapper">
-               <span>map</span>
-            </div>
-         </div>
-
-         <div>
-            <GreyButton
-               onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.CALCULATOR_PAGE })}
-               style={{ marginBottom: '20px' }}>
-               Назад
-            </GreyButton>
-            <PrimaryButton
-               onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.PAYMENT_METHOD_PAGE })}>
-               Далее
-            </PrimaryButton>
-         </div>
-      </MapStyled>
-   );
+      <div>
+        {/* <GreyButton
+          onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.CALCULATOR_PAGE })}
+          style={{ marginBottom: '20px' }}>
+          Назад
+        </GreyButton> */}
+        <NavLink to="/payment-method">
+          <PrimaryButton
+            primaryDisable={!selectedCoordinates}
+            onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.PAYMENT_METHOD_PAGE })}>
+            Далее
+          </PrimaryButton>
+        </NavLink>
+      </div>
+    </MapStyled>
+  );
 }
 
-const mapStateToProps = ({ firstPage }) => ({
-   customerAddress: firstPage.customerAddress,
+const mapStateToProps = ({ firstPage, globalData }) => ({
+  customerAddress: firstPage.customerAddress,
+  selectedCoordinates: globalData.selectedCoordinates
 });
 export default connect(mapStateToProps)(MapPage);

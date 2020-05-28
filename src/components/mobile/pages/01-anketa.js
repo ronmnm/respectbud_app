@@ -7,13 +7,14 @@ import { PrimaryButton } from '../../elements/buttons';
 import { connect } from 'react-redux';
 import * as t from '../../../redux/actionTypes';
 import { registerNewCustomer } from '../../../services/register';
+import { NavLink, Redirect } from 'react-router-dom';
 
 export const AnketaPageStyled = styled.div`
-  height: 100%;
+  height: 100vh;
   display: grid;
   grid-template-rows: min-content 1fr min-content;
   align-items: center;
-  padding: 6vh 30px 10vh 30px;
+  padding: 6vh 20px 10vh 20px;
 
   .input_field_wrapper {
     margin-bottom: 20px;
@@ -69,11 +70,13 @@ function AnketaPage({ customerName, customerPhone, customerOrganization, dispatc
         </div>
       </div>
       <div>
-        <PrimaryButton
-          // primaryDisable={customerName || customerPhone.length === 19}
-          onClick={handleNextClick}>
-          Далее
-        </PrimaryButton>
+        <NavLink to="/material">
+          <PrimaryButton
+            primaryDisable={!customerName || customerPhone.length !== 19}
+            onClick={handleNextClick}>
+            Далее
+          </PrimaryButton>
+        </NavLink>
       </div>
     </AnketaPageStyled>
   );
