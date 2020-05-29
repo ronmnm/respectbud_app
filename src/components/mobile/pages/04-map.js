@@ -14,8 +14,14 @@ import InputPlaces from '../../desktop/main-content/main-section/white-section/p
 const MapStyled = styled(AnketaPageStyled)`
   .content_wrapper {
     align-self: flex-start;
+    height: 100%;
     .map_wrapper {
-      height: 48vh;
+      height: 100%;
+      margin: 0;
+      /* padding-bottom: 44px; */
+      /* position: absolute; */
+      width: 100%;
+      padding-bottom: 44px;
       margin: 0;
     }
   }
@@ -24,7 +30,7 @@ const MapStyled = styled(AnketaPageStyled)`
 function MapPage({ dispatch, customerAddress, selectedCoordinates }) {
   return (
     <MapStyled>
-      <MobileHeader title="Адрес доставки" />
+      <MobileHeader title="Адрес доставки" withButton navLinkTo="calculations" />
       <div className="content_wrapper">
         <div className="input_field_wrapper">
           <InputPlaces address={customerAddress} dispatch={dispatch} />
@@ -36,7 +42,7 @@ function MapPage({ dispatch, customerAddress, selectedCoordinates }) {
           /> */}
         </div>
         <div className="map_wrapper">
-          <MapComponent style={{height: '100%'}} />
+          <MapComponent style={{ height: '100%' }} />
         </div>
       </div>
 
@@ -60,6 +66,6 @@ function MapPage({ dispatch, customerAddress, selectedCoordinates }) {
 
 const mapStateToProps = ({ firstPage, globalData }) => ({
   customerAddress: firstPage.customerAddress,
-  selectedCoordinates: globalData.selectedCoordinates
+  selectedCoordinates: globalData.selectedCoordinates,
 });
 export default connect(mapStateToProps)(MapPage);

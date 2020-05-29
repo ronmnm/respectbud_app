@@ -25,7 +25,7 @@ function CalculationVolumePage({ dispatch, materialWeight, materialVolume }) {
 
   return (
     <CalculationVolumeStyled>
-      <MobileHeader title="Калькулятор объема" />
+      <MobileHeader title="Калькулятор объема" withButton navLinkTo='material' />
       <div>
         <p className="additional_text">
           Введите вес для автоматического

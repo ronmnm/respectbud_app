@@ -10,7 +10,6 @@ import { InputStyled } from '../../elements/input';
 import * as t from '../../../redux/actionTypes';
 import { Router, NavLink } from 'react-router-dom';
 
-
 const ResultStyled = styled(AnketaPageStyled)`
   .additional_text {
     font-size: 1.1rem;
@@ -37,17 +36,17 @@ function ResultPage({ dispatch, finalPrice, paymentMethodList }) {
           <h1 className="text_centered">{finalPrice} грн</h1>
         </div>
       </div>
-      <NavLink to="/material">
-        <GreyButton onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.VYBOR_TOVARA_PAGE })}>
-          Рассчитать заново
-        </GreyButton>
-      </NavLink>
       <NavLink to="/order">
-        <PrimaryButton
-          style={{ marginTop: '20px' }}
-          onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.ORDER_MOBILE_PAGE })}>
+        <PrimaryButton onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.ORDER_MOBILE_PAGE })}>
           Заказать
         </PrimaryButton>
+      </NavLink>
+      <NavLink to="/material">
+        <GreyButton
+          style={{ marginTop: '20px' }}
+          onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.VYBOR_TOVARA_PAGE })}>
+          Рассчитать заново
+        </GreyButton>
       </NavLink>
     </ResultStyled>
   );

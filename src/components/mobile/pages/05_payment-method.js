@@ -17,7 +17,12 @@ import { history } from '../mobile';
 
 // const history = createBrowserHistory();
 
-const PaymentStyled = styled(AnketaPageStyled)``;
+const PaymentStyled = styled(AnketaPageStyled)`
+  .content_wrapper{
+    align-self: flex-start;
+    margin-top: 20px;
+  }
+`;
 
 function PaymentMethodPage({
   dispatch,
@@ -34,9 +39,10 @@ function PaymentMethodPage({
 
   const makeCalculations = async () => {
     setLoading(1);
-    const result = await getPrice(addr, materialTypeTitle, weight, paymentA, coords, phone);
+    const time = new Date().toLocaleString();
+    const result = await getPrice(addr, materialTypeTitle, weight, paymentA, coords, phone, time);
     console.log(result);
-    dispatch({ type: t.SET_FINAL_PRICE, payload: Math.ceil(Math.min(...result.finalPrices) / 10) * 10 });
+    dispatch({ type: t.SET_FINAL_PRICE, payload: result });
     setLoading(0);
     history.push('/result');
   };
@@ -44,8 +50,8 @@ function PaymentMethodPage({
   return (
     <Router history={history}>
       <PaymentStyled>
-        <MobileHeader title="Форма оплаты" />
-        <div>
+        <MobileHeader title="Форма оплаты" withButton navLinkTo="map" />
+        <div className='content_wrapper'>
           <div className="input_field_wrapper">
             <LabelStyled>* Выберите форму оплаты</LabelStyled>
             <Dropdown

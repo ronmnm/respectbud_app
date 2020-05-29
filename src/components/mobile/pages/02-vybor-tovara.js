@@ -29,7 +29,7 @@ function VyborTovaraPage({
   }
   return (
     <VyborTovaraStyled>
-      <MobileHeader title="Выбор товара" />
+      <MobileHeader title="Выбор товара" withButton navLinkTo='' />
       <div>
         <div className="input_field_wrapper">
           <LabelStyled>* Материал</LabelStyled>

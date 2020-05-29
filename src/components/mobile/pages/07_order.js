@@ -21,6 +21,12 @@ const DatePickerStyled = styled(DatePicker)`
 `;
 
 const OrderStyled = styled(AnketaPageStyled)`
+  .content_wrapper {
+    height: 100%;
+    display: grid;
+    grid-template-rows: min-content min-content 1fr;
+    padding: 50px 0;
+  }
   .react-datepicker-wrapper {
     width: 100%;
   }
@@ -33,19 +39,18 @@ const OrderStyled = styled(AnketaPageStyled)`
     pointer-events: none;
   }
   .text_area_wrapper {
-    height: 100%;
-    display: grid;
-    align-items: flex-end;
-    margin-bottom: 20px;
+    /* align-items: flex-end; */
+    /* margin-bottom: 20px; */
     .text_area {
       outline: none;
       -moz-appearance: none;
       border: 1px solid ${({ theme }) => theme.darkGrey};
       resize: none;
       height: 100%;
-      padding: 13px;
+      padding: 13px 13px 0 13px;
       font-size: 16px;
       font-family: 'Roboto', sans-serif;
+      width: 100%;
       &::placeholder {
         color: ${({ theme }) => theme.textLightGrey};
       }
@@ -63,8 +68,8 @@ const OrderStyled = styled(AnketaPageStyled)`
 function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment }) {
   return (
     <OrderStyled>
-      <MobileHeader title="Оформление заказа" />
-      <div>
+      <MobileHeader title="Оформление заказа" withButton navLinkTo="result" />
+      <div className="content_wrapper">
         <div className="input_field_wrapper">
           <LabelStyled>* Дата доставки</LabelStyled>
           <label htmlFor="eu" className="calendar_logo">
@@ -102,16 +107,11 @@ function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment }) {
       <NavLink to="/final-page">
         <PrimaryButton
           // height="55px"
+          primaryDisable={!orderComment || phoneOnUnloading.length !== 19 || !deliveryDate}
           onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.FINAL_PAGE })}>
           Оформить
         </PrimaryButton>
       </NavLink>
-      {/* <GreyButton
-            // height="55px"
-            onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.RESULT_MOBILE_PAGE })}
-            style={{ marginTop: '20px' }}>
-            Рассчитать заново
-         </GreyButton> */}
     </OrderStyled>
   );
 }
