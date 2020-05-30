@@ -5,11 +5,11 @@ const paymentMethodList = [
   { id: 1, title: 'Безналичный расчет', alias: 'bn' },
 ];
 
-
 const initialState = {
   paymentMethodList,
   selectedCoordinates: null,
   finalPrice: null,
+  time: null,
 };
 
 function globalData(state = initialState, action) {
@@ -17,7 +17,9 @@ function globalData(state = initialState, action) {
     case t.SET_COORDINATES:
       return { ...state, selectedCoordinates: { ...state.selectedCoordinates, ...action.payload } };
     case t.SET_FINAL_PRICE:
-      return { ...state, finalPrice: action.payload}
+      return { ...state, finalPrice: action.payload };
+    case t.SET_CALCULATION_TIMESTAMP:
+      return { ...state, time: action.payload };
     default:
       return state;
   }

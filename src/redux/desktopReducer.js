@@ -70,7 +70,7 @@ const materialSelectionState = {
   oneTonInM3: null,
   m3InTon: null,
 
-  materialWeight: 9,
+  materialWeight: null,
   materialVolume: null,
 
   customerName: null,
@@ -128,9 +128,9 @@ export function firstPageReducer(state = materialSelectionState, action) {
 const orderPageInitialState = {
   deliveryDate: null,
   deliveryDateHuman: null,
-  deliveryTime: null,
-  phoneOnUnloading: 0,
-  orderComment: null,
+  deliveryTime: "10:00",
+  phoneOnUnloading: "+38 (078) 787-87-87",
+  orderComment: 'yo',
 };
 
 export const orderDataReducer = (state = orderPageInitialState, action) => {

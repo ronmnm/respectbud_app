@@ -1,7 +1,7 @@
 import * as t from './actionTypes';
 
 const initialMobileComponentState = {
-   component: t.ANKETA_PAGE,
+   component: t.ORDER_PAGE,
 };
 
 export function currentMobileComponentReducer(state = initialMobileComponentState, action) {
