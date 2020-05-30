@@ -1,6 +1,109 @@
-const functions = require('firebase-functions');
+require("dotenv").config()
+const functions = require("firebase-functions")
+const admin = require("firebase-admin")
+const openrouteservice = require("openrouteservice-js")
 
-exports.randomNmb = functions.https.onRequest((request, response) => {
-  const number = Math.round(Math.random() * 100)
-  response.send(number.toString())
+const sendEmail = require("./src/send-mail")
+
+admin.initializeApp(functions.config().firebase)
+let firestore = admin.firestore()
+
+let Matrix = new openrouteservice.Matrix({
+  api_key: process.env.OPEN_ROUTE_SERVICE_KEY,
 })
+
+exports.getPrice = functions.region("europe-west1").https.onCall((data, context) => {})
+
+
+exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, context) => {
+  let { deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone } = data
+  try {
+    await firestore.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).update({
+      deliveryDateHuman,
+      deliveryTime,
+      phoneOnUnloading,
+      orderComment,
+    })
+  } catch (err) {
+    console.log(err)
+  }
+
+  let rawData
+  try {
+    rawData = await firestore.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).get()
+    console.log(rawData)
+  } catch (err) {
+    console.log(err)
+  }
+
+  // Отравка данных о заказе на почту
+  sendEmail(phone, time)
+})
+
+//// old varik
+// exports.getPrice = functions.https.onCall(async (data, context) => {
+//   const snapshot = await firestore.collection('suppliers').get();
+//   // const res = snapshot.docs.map(doc => ({ data: doc.data() }));
+
+//   const distance = Directions.calculate({
+//     coordinates: [
+//       [30.391574, 50.432252],
+//       [30.367413, 50.437719],
+//     ],
+//     profile: 'driving-hgv',
+//     format: 'json',
+//     // sources: ['all'],
+//     // destinations: ['all'],
+//   })
+//     .then(json => {
+//       console.log(json.routes[0].summary);
+//       return json.routes[0].summary;
+//     })
+//     .catch(err => {
+//       var str = 'An error occured: ' + err;
+//       console.log(str);
+//       throw new functions.https.HttpsError('Error getting document', err);
+//     });
+
+//   return distance;
+// const res = snapshot
+//   .then(snapshot => {
+//     return snapshot.docs.forEach(doc => {
+//       doc.data();
+//     });
+//   })
+//   .catch(err => {
+//     throw new functions.https.HttpsError('Error getting document', err);
+//   });
+
+// console.log(snapshot);
+// return { res, yo: data.name };
+
+/////////
+
+// suppliersArray.forEach(supplier => {
+//   console.log(supplier['Отсев'].nal);
+// });
+
+// check 1: get array sorted by materialType and paymentMethod
+// const array1 = suppliersArray.filter(item => item[materialType][paymentMethod] !== '');
+
+// get name, address and price of suppliers that passed check 1
+// const array2 = array1.map(item => ({
+//   name: item.name,
+//   address: item.address,
+//   materialType: materialType,
+//   materialPrice: item[materialType][paymentMethod],
+// }));
+// });
+
+// https request
+// exports.randomNmb = functions.https.onRequest((request, response) => {
+//   const number = Math.round(Math.random() * 100);
+//   response.send(number.toString());
+// });
+
+// // http callable function
+// exports.sayHello = functions.https.onCall((data, context) => {
+//   return `hello from back, ${data.name}`;
+// });

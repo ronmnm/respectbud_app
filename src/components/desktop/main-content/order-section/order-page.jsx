@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import * as t from '../../../../redux/actionTypes';
@@ -7,17 +7,19 @@ import { InputStyled, inputStyles } from '../../../elements/input';
 import Modal from '../../../elements/modal';
 import { useOutsideAlerter } from '../../../../hooks/outsideAlerter';
 import DatePicker, { registerLocale } from 'react-datepicker';
+import { firestore } from '../../../../services/firebase';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import ru from 'date-fns/locale/ru';
 import { Dropdown } from '../../../elements/dropdown';
 import PhoneInput from '../../../elements/phone-input';
+import PlaceOrder from '../../../../services/placeOrder';
 
 registerLocale('ru', ru);
 
 const OrderPageStyled = styled.div`
   max-width: 800px;
-  width: 75vw;
+  width: 70%;
   margin: auto;
   display: grid;
   padding: 0 50px 100px 50px;
@@ -61,7 +63,7 @@ const OrderPageStyled = styled.div`
           font-size: 16px;
           font-family: 'Roboto', sans-serif;
           &::placeholder {
-            color: ${({ theme }) => theme.textGrey};
+            color: ${({ theme }) => theme.textLightGrey};
           }
           &:focus {
             transition: 0.2s;
@@ -132,8 +134,6 @@ const DatePickerStyled = styled(DatePicker)`
   ${inputStyles}
 `;
 
-
-
 const OrderPage = ({
   backToMain,
   setDeliveryDate,
@@ -144,11 +144,17 @@ const OrderPage = ({
   setPhone,
   orderComment,
   setComment,
+  phone,
+  time,
+  deliveryDateHuman
 }) => {
   const { visible, setVisible, ref } = useOutsideAlerter(false);
+  const [loading, setLoading] = useState(0);
 
-  function makeOrderClick() {
-    
+  async function makeOrderClick() {
+    setLoading(1);
+    await PlaceOrder({deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone})
+    setLoading(0);
     setVisible(true);
   }
 
@@ -207,7 +213,8 @@ const OrderPage = ({
           </div>
           <div>
             <PrimaryButton
-              // primaryDisable={!deliveryDate || !deliveryTime || phoneOnUnloading.length !== 19 || !orderComment}
+              loading={loading}
+              primaryDisable={!deliveryDate || !deliveryTime || phoneOnUnloading.length !== 19 || !orderComment}
               onClick={makeOrderClick}>
               Оформить заказ
             </PrimaryButton>
@@ -249,10 +256,13 @@ const mapDispatchToProps = dispatch => ({
   setPhone: value => dispatch({ type: t.SET_PHONE_ON_UNLOADING, payload: value }),
   setComment: value => dispatch({ type: t.SET_ORDER_COMMENT, payload: value }),
 });
-const mapStateToProps = ({ order }) => ({
+const mapStateToProps = ({ order, globalData, firstPage }) => ({
   deliveryDate: order.deliveryDate,
+  deliveryDateHuman: order.deliveryDateHuman,
   deliveryTime: order.deliveryTime,
   phoneOnUnloading: order.phoneOnUnloading,
   orderComment: order.orderComment,
+  time: globalData.time,
+  phone: firstPage.customerPhone,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(OrderPage);

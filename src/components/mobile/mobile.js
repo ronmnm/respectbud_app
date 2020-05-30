@@ -54,7 +54,7 @@ export default function Mobile() {
   // }
 
   useEffect(() => {
-    // history.push('/')
+    history.push('/')
   }, [])
 
   return (

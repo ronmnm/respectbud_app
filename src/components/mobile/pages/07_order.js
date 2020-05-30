@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AnketaPageStyled } from './01-anketa';
 import MobileHeader from './header/header';
@@ -12,7 +12,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ru from 'date-fns/locale/ru';
 import PhoneInput from '../../elements/phone-input';
 import { Svg7 } from '../../../static/7';
-import { NavLink } from 'react-router-dom';
+import { history } from '../mobile';
+import PlaceOrder from '../../../services/placeOrder';
 
 registerLocale('ru', ru);
 
@@ -65,7 +66,17 @@ const OrderStyled = styled(AnketaPageStyled)`
   }
 `;
 
-function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment }) {
+function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment, deliveryDateHuman, deliveryTime, time, phone }) {
+
+  const [loading, setLoading] = useState(0)
+
+  const makeOrderTap = async () => {
+    setLoading(1)
+    await PlaceOrder({deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone})
+    setLoading(0)
+    history.push('/final-page');
+  }
+
   return (
     <OrderStyled>
       <MobileHeader title="Оформление заказа" withButton navLinkTo="result" />
@@ -104,14 +115,12 @@ function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment }) {
             className="text_area"></textarea>
         </div>
       </div>
-      <NavLink to="/final-page">
         <PrimaryButton
-          // height="55px"
+          loading={loading}
           primaryDisable={!orderComment || phoneOnUnloading.length !== 19 || !deliveryDate}
-          onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.FINAL_PAGE })}>
-          Оформить
+          onClick={makeOrderTap}>
+          Оформить заказ
         </PrimaryButton>
-      </NavLink>
     </OrderStyled>
   );
 }
@@ -121,6 +130,9 @@ const mapStateToProps = ({ globalData, firstPage, order }) => ({
   deliveryDate: order.deliveryDate,
   phoneOnUnloading: order.phoneOnUnloading,
   orderComment: order.orderComment,
+  deliveryDateHuman: order.deliveryDateHuman,
+  time: globalData.time,
+  phone: firstPage.customerPhone,
 });
 
 export default connect(mapStateToProps)(OrderPage);

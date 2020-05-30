@@ -11,7 +11,7 @@ export async function registerNewCustomer(name, phone, organization) {
       phone,
       organization,
       platform: navigator.platform,
-      timestamp: new Date().toLocaleString(),
+      registerDate: new Date().toLocaleString(),
     };
 
     try {

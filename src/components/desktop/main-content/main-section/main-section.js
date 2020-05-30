@@ -23,7 +23,7 @@ const mapStateToProps = ({ firstPage }) => ({
    whiteSection: {
       customerName: firstPage.customerName,
       customerOrganization: firstPage.customerOrganization,
-      customerPhone: firstPage.customerPhone,
+      // customerPhone: firstPage.customerPhone,
       customerPaymentMethod: firstPage.customerPaymentMethod,
       addr: firstPage.customerAddress,
    },

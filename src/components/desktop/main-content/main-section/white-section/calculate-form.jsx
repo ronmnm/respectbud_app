@@ -48,7 +48,7 @@ const CalculateForm = ({
   dispatch,
   customerName,
   customerOrganization,
-  customerPhone,
+  // customerPhone: phone,
   customerPaymentMethod,
   addr,
   weight,
@@ -61,12 +61,14 @@ const CalculateForm = ({
   const [isLoading, setIsLoading] = useState(0)
 
   async function handleCalculateClick() {
-    await registerNewCustomer(customerName, customerPhone, customerOrganization)
-
     setIsLoading(1)
-    const result = await getPrice(addr, materialTypeTitle, weight, paymentMethodAlias, selectedCoordinates, phone);
+    await registerNewCustomer(customerName, phone, customerOrganization)
+
+    const time = new Date().toLocaleString()
+    dispatch({type: t.SET_CALCULATION_TIMESTAMP, payload: time})
+    const result = await getPrice(addr, materialTypeTitle, weight, paymentMethodAlias, selectedCoordinates, phone, time);
     console.log(result);
-    dispatch({type: t.SET_FINAL_PRICE, payload: Math.ceil(Math.min(...result.finalPrices) / 10) * 10})
+    dispatch({type: t.SET_FINAL_PRICE, payload: result})
     setIsLoading(0)
 
     dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE });
@@ -98,7 +100,7 @@ const CalculateForm = ({
             <div>
               <span className="input_label">* Номер телефона</span>
               <PhoneInput
-                value={customerPhone || ''}
+                value={phone || ''}
                 onChange={value => dispatch({ type: t.SET_CUSTOMER_PHONE, payload: value })}
               />
             </div>

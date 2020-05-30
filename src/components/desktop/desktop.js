@@ -4,12 +4,12 @@ import Footer from './footer/footer';
 import MainContent from './main-content/main-content';
 
 const Desktop = () => {
-   return (
-      <>
-         <Header />
-         <MainContent />
-         <Footer />
-      </>
-   );
+  return (
+    <>
+      <Header />
+      <MainContent />
+      <Footer />
+    </>
+  );
 };
 export default Desktop;

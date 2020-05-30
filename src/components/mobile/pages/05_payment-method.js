@@ -40,8 +40,8 @@ function PaymentMethodPage({
   const makeCalculations = async () => {
     setLoading(1);
     const time = new Date().toLocaleString();
+    dispatch({type: t.SET_CALCULATION_TIMESTAMP, payload: time})
     const result = await getPrice(addr, materialTypeTitle, weight, paymentA, coords, phone, time);
-    console.log(result);
     dispatch({ type: t.SET_FINAL_PRICE, payload: result });
     setLoading(0);
     history.push('/result');
