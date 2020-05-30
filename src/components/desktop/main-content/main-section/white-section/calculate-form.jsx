@@ -1,19 +1,18 @@
-import React, {useState} from 'react';
-import styled from 'styled-components';
-import { PrimaryButton } from '../../../../elements/buttons';
-import { InputStyled } from '../../../../elements/input';
-import PhoneInput from '../../../../elements/phone-input';
-import { connect } from 'react-redux';
-import * as t from '../../../../../redux/actionTypes';
-import { Dropdown } from '../../../../elements/dropdown';
-import { registerNewCustomer } from '../../../../../services/register';
-import { getPrice } from '../../../../../services/get-price';
-import InputPlaces from './places-input';
+import React, { useState } from "react"
+import styled from "styled-components"
+import { PrimaryButton } from "../../../../elements/buttons"
+import { InputStyled } from "../../../../elements/input"
+import PhoneInput from "../../../../elements/phone-input"
+import { connect } from "react-redux"
+import * as t from "../../../../../redux/actionTypes"
+import { Dropdown } from "../../../../elements/dropdown"
+import { registerNewCustomer } from "../../../../../services/register"
+import { getPrice } from "../../../../../services/get-price"
+import InputPlaces from "./places-input"
 
 const CalculateFormStyled = styled.div`
   width: 100%;
   display: grid;
-  /* grid-template-rows: min-content min-content; */
   align-items: center;
   .necessary_field {
     font-size: 13px;
@@ -42,13 +41,12 @@ const CalculateFormStyled = styled.div`
       }
     }
   }
-`;
+`
 
 const CalculateForm = ({
   dispatch,
   customerName,
   customerOrganization,
-  // customerPhone: phone,
   customerPaymentMethod,
   addr,
   weight,
@@ -65,13 +63,13 @@ const CalculateForm = ({
     await registerNewCustomer(customerName, phone, customerOrganization)
 
     const time = new Date().toLocaleString()
-    dispatch({type: t.SET_CALCULATION_TIMESTAMP, payload: time})
-    const result = await getPrice(addr, materialTypeTitle, weight, paymentMethodAlias, selectedCoordinates, phone, time);
-    console.log(result);
-    dispatch({type: t.SET_FINAL_PRICE, payload: result})
+    dispatch({ type: t.SET_CALCULATION_TIMESTAMP, payload: time })
+    const result = await getPrice(addr, materialTypeTitle, weight, paymentMethodAlias, selectedCoordinates, phone, time)
+    console.log(result)
+    dispatch({ type: t.SET_FINAL_PRICE, payload: result })
     setIsLoading(0)
 
-    dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE });
+    dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE })
   }
 
   return (
@@ -84,7 +82,7 @@ const CalculateForm = ({
               <InputStyled
                 border
                 placeholder="Петро"
-                value={customerName || ''}
+                value={customerName || ""}
                 onChange={e => dispatch({ type: t.SET_CUSTOMER_NAME, payload: e.target.value })}
               />
             </div>
@@ -93,14 +91,14 @@ const CalculateForm = ({
               <InputStyled
                 border
                 placeholder="ТОВ"
-                value={customerOrganization || ''}
+                value={customerOrganization || ""}
                 onChange={e => dispatch({ type: t.SET_CUSTOMER_ORGANIZATION, payload: e.target.value })}
               />
             </div>
             <div>
               <span className="input_label">* Номер телефона</span>
               <PhoneInput
-                value={phone || ''}
+                value={phone || ""}
                 onChange={value => dispatch({ type: t.SET_CUSTOMER_PHONE, payload: value })}
               />
             </div>
@@ -139,8 +137,8 @@ const CalculateForm = ({
         <span className="necessary_field">* - Обязательное к заполнению поле</span>
       </div>
     </CalculateFormStyled>
-  );
-};
+  )
+}
 
 const mapStateToProps = ({ firstPage, globalData }) => ({
   weight: firstPage.materialWeight,
@@ -149,6 +147,6 @@ const mapStateToProps = ({ firstPage, globalData }) => ({
   paymentMethodAlias: firstPage.paymentMethodAlias,
   selectedCoordinates: globalData.selectedCoordinates,
   phone: firstPage.customerPhone,
-});
+})
 
-export default connect(mapStateToProps)(CalculateForm);
+export default connect(mapStateToProps)(CalculateForm)

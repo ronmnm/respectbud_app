@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { inputStyles } from '../../../../elements/input';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
-import * as t from '../../../../../redux/actionTypes';
+import React from "react"
+import styled, { css } from "styled-components"
+import { inputStyles } from "../../../../elements/input"
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from "react-places-autocomplete"
+import * as t from "../../../../../redux/actionTypes"
 
 const InputAutocompleteStyled = styled.input`
   ${inputStyles};
   position: relative;
   z-index: 3;
-`;
+`
 const InputAutocompleteWrapperStyled = styled.div`
   position: relative;
   .list {
@@ -23,21 +23,21 @@ const InputAutocompleteWrapperStyled = styled.div`
           border-left: 1px solid ${({ theme }) => theme.black};
           border-right: 1px solid ${({ theme }) => theme.black};
           border-bottom: 1px solid ${({ theme }) => theme.black};
-        `;
+        `
       } else {
         return css`
           z-index: 2;
           border: none;
-        `;
+        `
       }
     }}
     .item {
       padding: 10px 15px;
       font-size: 16px;
-      color: ${({theme}) => theme.textGrey};
+      color: ${({ theme }) => theme.textGrey};
       font-weight: 400;
-      b{
-        color: ${({theme}) => theme.textBlack};
+      b {
+        color: ${({ theme }) => theme.textBlack};
         font-weight: 500;
       }
       &:hover {
@@ -46,31 +46,30 @@ const InputAutocompleteWrapperStyled = styled.div`
       }
     }
   }
-`;
+`
 
 export default function InputPlaces({ dispatch, address }) {
   async function handleSelect(value) {
-    dispatch({ type: t.SET_CUSTOMER_ADDRESS, payload: value });
-    const coords = await geocodeByAddress(value);
-    const res = await getLatLng(coords[0]);
-    dispatch({ type: t.SET_COORDINATES, payload: res });
+    dispatch({ type: t.SET_CUSTOMER_ADDRESS, payload: value })
+    const coords = await geocodeByAddress(value)
+    const res = await getLatLng(coords[0])
+    dispatch({ type: t.SET_COORDINATES, payload: res })
   }
 
   function handleChange(value) {
-    dispatch({ type: t.SET_CUSTOMER_ADDRESS, payload: value });
-    // dispatch({type: t.SET_COORDINATES, payload: null})
+    dispatch({ type: t.SET_CUSTOMER_ADDRESS, payload: value })
   }
 
   const searchOptions = {
     location: new window.google.maps.LatLng(50.44941, 30.524184),
     radius: 150000,
-    types: ['address'],
-    componentRestrictions: { country: ['ukr'] },
-  };
+    types: ["address"],
+    componentRestrictions: { country: ["ukr"] },
+  }
 
   return (
     <PlacesAutocomplete
-      value={address || ''}
+      value={address || ""}
       onChange={value => handleChange(value)}
       onSelect={handleSelect}
       searchOptions={searchOptions}>
@@ -80,15 +79,14 @@ export default function InputPlaces({ dispatch, address }) {
           <div className="list">
             {suggestions.map(item => {
               return (
-                <div
-                  {...getSuggestionItemProps(item)}
-                  className="item"
-                  key={item.id}><b>{item.terms[0].value}</b>, {item.terms[1].value}</div>
-              );
+                <div {...getSuggestionItemProps(item)} className="item" key={item.id}>
+                  <b>{item.terms[0].value}</b>, {item.terms[1].value}
+                </div>
+              )
             })}
           </div>
         </InputAutocompleteWrapperStyled>
       )}
     </PlacesAutocomplete>
-  );
+  )
 }
