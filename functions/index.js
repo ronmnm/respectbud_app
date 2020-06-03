@@ -14,15 +14,18 @@ let Matrix = new openrouteservice.Matrix({
 
 exports.getPrice = functions.region("europe-west1").https.onCall((data, context) => {})
 
-
 exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, context) => {
-  let { deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone } = data
+  let { deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone, name, address, weight } = data
   try {
     await firestore.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).update({
       deliveryDateHuman,
       deliveryTime,
       phoneOnUnloading,
       orderComment,
+      phone,
+      name,
+      address,
+      weight
     })
   } catch (err) {
     console.log(err)
@@ -30,14 +33,31 @@ exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, 
 
   let rawData
   try {
-    rawData = await firestore.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).get()
-    console.log(rawData)
+    rawData = await (
+      await firestore.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).get()
+    ).data()
+    // console.log(rawData)
   } catch (err) {
     console.log(err)
   }
+  // var docRef = db.collection("cities").doc("SF")
+
+  // docRef
+  //   .get()
+  //   .then(function (doc) {
+  //     if (doc.exists) {
+  //       console.log("Document data:", doc.data())
+  //     } else {
+  //       // doc.data() will be undefined in this case
+  //       console.log("No such document!")
+  //     }
+  //   })
+  //   .catch(function (error) {
+  //     console.log("Error getting document:", error)
+  //   })
 
   // Отравка данных о заказе на почту
-  sendEmail(phone, time)
+  sendEmail(phone, time, rawData)
 })
 
 //// old varik
