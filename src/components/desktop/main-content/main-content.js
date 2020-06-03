@@ -1,27 +1,21 @@
-import React from 'react';
-import MainSection from './main-section/main-section';
-import { connect } from 'react-redux';
-import * as t from '../../../redux/actionTypes';
-import ResultPage from './result-section/result-page';
-import OrderPage from './order-section/order-page';
+import React, { useEffect } from "react"
+import MainSection from "./01_calculate/main-section"
+import ResultPage from "./02_result/result-page"
+import OrderPage from "./03_order/order-page"
+import { createBrowserHistory } from "history"
+import { Router, Route } from "react-router-dom"
 
-const MainContent = ({ currentComponent }) => {
-   switch (currentComponent) {
-      case t.MAIN_FORM:
-         return <MainSection/>;
+export const history = createBrowserHistory()
 
-      case t.RESULT_PAGE:
-         return <ResultPage />
-
-      case t.ORDER_PAGE:
-         return <OrderPage />
-
-      default:
-         return <MainSection />;
-   }
-};
-
-const mapStateToProps = ({ desktop }) => ({
-   currentComponent: desktop.currentComponent,
-});
-export default connect(mapStateToProps)(MainContent);
+export default function MainContent() {
+  useEffect(() => {
+    history.push('/')
+  }, [])
+  return (
+    <Router history={history}>
+      <Route path="/" exact render={() => <MainSection />} />
+      <Route path="/result" exact render={() => <ResultPage />} />
+      <Route path="/order" exact render={() => <OrderPage />} />
+    </Router>
+  )
+}
