@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../../../static/logo.png';
-import { Svg7 } from '../../../static/7';
+import logo from '../../static/logo.png';
+import { Svg7 } from '../../static/7';
 
 const HeaderStyled = styled.div`
   /* display: grid; */

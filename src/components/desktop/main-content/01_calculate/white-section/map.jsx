@@ -22,10 +22,12 @@ const MapStyed = styled.div`
 `
 
 function Map({ selectedCoordinates, dispatch }) {
+  const map = useRef()
   const defaultCenterCoords = { lat: 50.44941, lng: 30.524184 }
 
   function handleOnMapClick(e) {
     let latlng = { lat: e.latLng.lat(), lng: e.latLng.lng() }
+    
     dispatch({ type: t.SET_COORDINATES, payload: latlng })
 
     let geocoder = new window.google.maps.Geocoder()
@@ -39,7 +41,6 @@ function Map({ selectedCoordinates, dispatch }) {
     })
   }
 
-  const map = useRef()
 
   useEffect(() => {
     if (selectedCoordinates) {

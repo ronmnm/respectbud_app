@@ -1,8 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import * as t from '../../../../redux/actionTypes';
-import { PrimaryButton, GreyButton } from '../../../elements/buttons';
+import React from "react"
+import styled from "styled-components"
+import { connect } from "react-redux"
+import * as t from "../../../../redux/actionTypes"
+import { PrimaryButton, GreyButton } from "../../../elements/buttons"
+import { history } from "../main-content"
+import { NavLink } from "react-router-dom"
 
 const ResultStyled = styled.div`
   display: grid;
@@ -29,35 +31,39 @@ const ResultStyled = styled.div`
     grid-template-columns: minmax(150px, 240px) minmax(150px, 240px);
     column-gap: 20px;
   }
-`;
+`
 
 const ResultPage = ({ dispatch, finalPrice }) => {
   const handleBack = () => {
-    dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM });
-  };
+    // dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM });
+    console.log('клиент нажал рассчитать заново десктоп');
+    history.push("/")
+  }
   const handleProceedToOrder = () => {
-    dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.ORDER_PAGE });
-  };
+    dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.ORDER_PAGE })
+  }
   return (
     <ResultStyled>
       <h1>Результат</h1>
       <h3>
-        Цена с доставкой составляет: <span>{finalPrice} грн</span>{' '}
+        Цена с доставкой составляет: <span>{finalPrice} грн</span>{" "}
       </h3>
       <div className="buttons_wrap">
         <div>
           <GreyButton onClick={handleBack}>Рассчитать заново</GreyButton>
         </div>
         <div>
-          <PrimaryButton onClick={handleProceedToOrder}>Заказать</PrimaryButton>
+          <NavLink to="/order">
+            <PrimaryButton onClick={handleProceedToOrder}>Заказать</PrimaryButton>
+          </NavLink>
         </div>
       </div>
     </ResultStyled>
-  );
-};
+  )
+}
 
 const mapStateToProps = ({ globalData }) => ({
   finalPrice: globalData.finalPrice,
-});
+})
 
-export default connect(mapStateToProps)(ResultPage);
+export default connect(mapStateToProps)(ResultPage)

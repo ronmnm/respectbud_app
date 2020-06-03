@@ -10,6 +10,8 @@ import { registerNewCustomer } from "../../../../../services/register"
 import { getPrice } from "../../../../../services/get-price"
 import InputPlaces from "./places-input"
 
+import { history } from "../../main-content"
+
 const CalculateFormStyled = styled.div`
   width: 100%;
   display: grid;
@@ -55,6 +57,7 @@ const CalculateForm = ({
   paymentMethodAlias,
   selectedCoordinates,
   phone,
+  materialTitle,
 }) => {
   const [isLoading, setIsLoading] = useState(0)
 
@@ -64,14 +67,26 @@ const CalculateForm = ({
 
     const time = new Date().toLocaleString()
     dispatch({ type: t.SET_CALCULATION_TIMESTAMP, payload: time })
-    const result = await getPrice(addr, materialTypeTitle, weight, paymentMethodAlias, selectedCoordinates, phone, time)
-    console.log(result)
+    const result = await getPrice(
+      addr,
+      materialTitle,
+      materialTypeTitle,
+      weight,
+      paymentMethodAlias,
+      selectedCoordinates,
+      phone,
+      time
+    )
+    console.log("Финальная цена", result)
     dispatch({ type: t.SET_FINAL_PRICE, payload: result })
     setIsLoading(0)
-
-    dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE })
+    history.push("/result")
+    // dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE })
   }
 
+  function getError() {
+    this.setState({ go: "bla" })
+  }
   return (
     <CalculateFormStyled>
       <div>
@@ -122,12 +137,12 @@ const CalculateForm = ({
             <PrimaryButton
               loading={isLoading}
               primaryDisable={
-                //   !customerName ||
-                //   customerPhone.length !== 19 ||
-                //   !customerPaymentMethod ||
-                !selectedCoordinates || !addr
-
-                //   !materialWeight
+                !customerName ||
+                phone.length !== 19 ||
+                !customerPaymentMethod ||
+                !selectedCoordinates ||
+                !addr ||
+                !weight
               }
               onClick={handleCalculateClick}>
               Рассчитать
@@ -147,6 +162,7 @@ const mapStateToProps = ({ firstPage, globalData }) => ({
   paymentMethodAlias: firstPage.paymentMethodAlias,
   selectedCoordinates: globalData.selectedCoordinates,
   phone: firstPage.customerPhone,
+  materialTitle: firstPage.materialTitle,
 })
 
 export default connect(mapStateToProps)(CalculateForm)

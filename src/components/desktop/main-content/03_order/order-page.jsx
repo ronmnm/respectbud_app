@@ -146,14 +146,17 @@ const OrderPage = ({
   setComment,
   phone,
   time,
-  deliveryDateHuman
+  deliveryDateHuman,
+  name,
+  address,
+  weight
 }) => {
   const { visible, setVisible, ref } = useOutsideAlerter(false);
   const [loading, setLoading] = useState(0);
 
   async function makeOrderClick() {
     setLoading(1);
-    await PlaceOrder({deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone})
+    await PlaceOrder({deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone, name, address, weight})
     setLoading(0);
     setVisible(true);
   }
@@ -264,5 +267,8 @@ const mapStateToProps = ({ order, globalData, firstPage }) => ({
   orderComment: order.orderComment,
   time: globalData.time,
   phone: firstPage.customerPhone,
+  name: firstPage.customerName,
+  address: firstPage.customerAddress,
+  weight: firstPage.materialWeight
 });
 export default connect(mapStateToProps, mapDispatchToProps)(OrderPage);
