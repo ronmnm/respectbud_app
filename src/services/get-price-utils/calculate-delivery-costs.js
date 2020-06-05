@@ -1,6 +1,6 @@
 /**
  * Function returns delivery costs for particular truck depending on weight
- * @param distances is array of distances, each elements is also array
+ * @param distances is array of distances
  * @param weight amount of tons
  */
 export function calculateDeliveryCost(distances, weight) {

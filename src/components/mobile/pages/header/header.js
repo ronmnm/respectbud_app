@@ -16,7 +16,7 @@ const HeaderStyled = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f6f6f6;
+    /* background-color: #f6f6f6; */
     border: none;
     /* margin-left: 10px; */
     svg {
