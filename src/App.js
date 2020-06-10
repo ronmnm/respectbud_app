@@ -1,10 +1,9 @@
 import React, { useEffect } from "react"
-import Desktop from "./components/desktop/desktop"
+import Desktop from "./components/desktop"
 import Mobile from "./components/mobile/mobile"
 import ReactGA from "react-ga"
 import * as t from "./redux/actionTypes"
 
-import { firestore } from "./services/firebase"
 import { connect } from "react-redux"
 
 
@@ -21,7 +20,6 @@ function App({ dispatch }) {
   }
 
   useEffect(() => {
-    console.log("app use effect fire")
     ReactGA.initialize('UA-166957247-1')
     ReactGA.pageview(window.location.pathname + window.location.search);
     checkIfLoggedIn()
