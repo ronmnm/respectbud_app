@@ -5,7 +5,7 @@ export function filterSuppliersArray(allSuppliers, materialTitle, weight, materi
     let withoutGranit = allSuppliers.filter(supplier => !supplier.isGranitKaryer)
     return withoutGranit.filter(supplier => supplier.materials[materialType][paymentMethod] !== "" && supplier.coordinates.lat)
 
-  } else if(materialTitle === 'Щебень' && +weight >= 30) {
+  } else if(materialTitle === 'Щебень' && +weight >= 25) {
     // если щебень и >= 30т то удаляет только карьер с песком
     let withoutSand = allSuppliers.filter(supplier => !supplier.isSandKaryer)
     return withoutSand.filter(supplier => supplier.materials[materialType][paymentMethod] !== "" && supplier.coordinates.lat)

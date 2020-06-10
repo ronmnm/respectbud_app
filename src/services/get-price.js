@@ -5,6 +5,7 @@ import openrouteservice from "openrouteservice-js"
 
 import { filterSuppliersArray } from "./get-price-utils/filter-suppliers-array"
 import { calculateDeliveryCost } from "./get-price-utils/calculate-delivery-costs"
+import modifyResults from "./get-price-utils/modify-results"
 
 const openrouteserviceKey = "5b3ce3597851110001cf6248a9876145e10e43139207d591e4ab1c9d"
 
@@ -13,28 +14,28 @@ var Matrix = new openrouteservice.Matrix({
 })
 
 export async function getPrice2(address, materialTitle, materialType, weight, paymentMethod, coordinates, phone, time) {
-  let name = "K.6_Песок Выдубичи"
-  let lat = '' // 50
-  let lng = ''
+  let name = "K.1_Шамраевский"
+  let lat = "" // 50
+  let lng = ""
 
   const suppliersArray = [
     {
       name: name,
-      isSandKaryer: true,
+      isGranitKaryer: true,
       address: "",
       // { lat: e.latLng.lat(), lng: e.latLng.lng() }
       coordinates: { lat: lat, lng: lng },
       // coordinates: { ...selectedCoordinates },
       showLngLatInGoogle: `https://www.google.com/search?q=${lat}%2C+${lng}`,
       materials: {
-        "Песок овражный": {
-          nal: "",
-          bn: "",
-        },
-        "Песок речной": {
-          nal: "",
-          bn: "",
-        },
+        // "Песок овражный": {
+        //   nal: "",
+        //   bn: "",
+        // },
+        // "Песок речной": {
+        //   nal: "",
+        //   bn: "",
+        // },
         "Щебень 2-5": {
           nal: "",
           bn: "",
@@ -71,22 +72,22 @@ export async function getPrice2(address, materialTitle, materialType, weight, pa
           nal: "",
           bn: "",
         },
-        "Керамзит 5-10": {
-          nal: "",
-          bn: "",
-        },
-        "Керамзит 10-20": {
-          nal: "",
-          bn: "",
-        },
-        Супесь: {
-          nal: "",
-          bn: "",
-        },
-        Суглинок: {
-          nal: "",
-          bn: "",
-        },
+        // "Керамзит 5-10": {
+        //   nal: "",
+        //   bn: "",
+        // },
+        // "Керамзит 10-20": {
+        //   nal: "",
+        //   bn: "",
+        // },
+        // Супесь: {
+        //   nal: "",
+        //   bn: "",
+        // },
+        // Суглинок: {
+        //   nal: "",
+        //   bn: "",
+        // },
       },
     },
   ]
@@ -132,45 +133,38 @@ export async function getPrice(address, materialTitle, materialType, weight, pay
   })
 
   // 5. Цена доставки для для всеx расстояний
-  let deliveryCosts = calculateDeliveryCost(distancesArray.distances, +weight)
+  let results = calculateDeliveryCost(distancesArray.distances, +weight)
 
   // 6. Добавление доп информации
-  for (let i = 0; distancesArray.distances.length > i; i++) {
-    let materialPrice = suppliers[i].materials[materialType][paymentMethod]
-    deliveryCosts[i].supplierName = suppliers[i].name
-    deliveryCosts[i].materialPrice1t = materialPrice
-    deliveryCosts[i].materialPrice = materialPrice * weight
-    deliveryCosts[i].priceForCustomer = materialPrice * weight + deliveryCosts[i].deliveryPrice
-    deliveryCosts[i].material = materialType
-    deliveryCosts[i].paymentMethod = paymentMethod
-    deliveryCosts[i].address2 = address
-    deliveryCosts[i].weight2 = weight
-    // если щебень с карьера то минус 200 грн маржи
-    if (deliveryCosts[i].supplierName === "K.1_GMP+") {
-      deliveryCosts[i].deliveryPrice = deliveryCosts[i].deliveryPrice - 200
-    }
-  }
-
-  console.log("Результаты просчета", deliveryCosts)
+  results = modifyResults(results, weight, materialType, paymentMethod, address, suppliers)
+  console.log("Результаты просчета", results)
 
   let pricesForCustomer = [] // [9989, 9898, 8989]
-  for (let i = 0; deliveryCosts.length > i; i++) {
-    pricesForCustomer.push(deliveryCosts[i].priceForCustomer)
+  let price30t = null
+  for (let i = 0; results.length > i; i++) {
+    if (results[i].priceForCustomer !== null) {
+      pricesForCustomer.push(results[i].priceForCustomer)
+    } else if (results[i].price30t) {
+      price30t = Math.ceil(results[i].price30t / 10) * 10
+    }
   }
   console.log("Цены для клиента", pricesForCustomer)
+
   const pickedPrice = Math.min(...pricesForCustomer)
-  const pickedResult = deliveryCosts.filter(item => item.priceForCustomer === pickedPrice)
+  const pickedResult = results.filter(item => item.priceForCustomer === pickedPrice)
   console.log("выбранные результат расчета", pickedResult)
+
   const pickedPriceRound = Math.ceil(pickedPrice / 10) * 10
 
+  // set data to firestore
   await firestore
     .collection("customers")
     .doc(phone.substr(3))
     .collection("orders")
     .doc(time)
-    .set({ calculations: { ...deliveryCosts }, result: pickedResult[0] })
+    .set({ calculations: { ...results }, result: pickedResult[0] })
 
-  return pickedPriceRound
+  return { pickedPriceRound, price30t }
 }
 
 // const getPrice = functions().httpsCallable('getPrice');

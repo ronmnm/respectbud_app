@@ -33,10 +33,10 @@ const ResultStyled = styled.div`
   }
 `
 
-const ResultPage = ({ dispatch, finalPrice }) => {
+const ResultPage = ({ dispatch, finalPrice, price30t }) => {
   const handleBack = () => {
     // dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM });
-    console.log('клиент нажал рассчитать заново десктоп');
+    console.log("клиент нажал рассчитать заново десктоп")
     history.push("/")
   }
   const handleProceedToOrder = () => {
@@ -48,6 +48,11 @@ const ResultPage = ({ dispatch, finalPrice }) => {
       <h3>
         Цена с доставкой составляет: <span>{finalPrice} грн</span>{" "}
       </h3>
+      {price30t && (
+        <h3 style={{fontSize: '16px'}}>
+          Цена 30-ти тонн с доствкой: <span>{price30t} грн</span>{" "}
+        </h3>
+      )}
       <div className="buttons_wrap">
         <div>
           <GreyButton onClick={handleBack}>Рассчитать заново</GreyButton>
@@ -64,6 +69,7 @@ const ResultPage = ({ dispatch, finalPrice }) => {
 
 const mapStateToProps = ({ globalData }) => ({
   finalPrice: globalData.finalPrice,
+  price30t: globalData.price30t,
 })
 
 export default connect(mapStateToProps)(ResultPage)

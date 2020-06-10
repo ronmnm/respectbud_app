@@ -78,7 +78,10 @@ const CalculateForm = ({
       time
     )
     console.log("Финальная цена", result)
-    dispatch({ type: t.SET_FINAL_PRICE, payload: result })
+    dispatch({ type: t.SET_FINAL_PRICE, payload: result.pickedPriceRound })
+    if (result.price30t) {
+      dispatch({ type: t.SET_30T_PRICE, payload: result.price30t })
+    }
     setIsLoading(0)
     history.push("/result")
     // dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE })
@@ -147,6 +150,7 @@ const CalculateForm = ({
               onClick={handleCalculateClick}>
               Рассчитать
             </PrimaryButton>
+            {/* <button onClick={handleCalculateClick}>оп</button> */}
           </div>
         </div>
         <span className="necessary_field">* - Обязательное к заполнению поле</span>
