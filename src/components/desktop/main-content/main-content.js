@@ -9,7 +9,7 @@ export const history = createBrowserHistory()
 
 export default function MainContent() {
   useEffect(() => {
-    history.push('/')
+    history.push("/")
   }, [])
   return (
     <Router history={history}>

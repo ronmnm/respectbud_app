@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { connect } from 'react-redux';
-import * as t from '../../../../redux/actionTypes';
-import { PrimaryButton } from '../../../elements/buttons';
-import { InputStyled, inputStyles } from '../../../elements/input';
-import Modal from '../../../elements/modal';
-import { useOutsideAlerter } from '../../../../hooks/outsideAlerter';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import { firestore } from '../../../../services/firebase';
+import React, { useState } from "react"
+import styled from "styled-components"
+import { connect } from "react-redux"
+import * as t from "../../../../redux/actionTypes"
+import { PrimaryButton } from "../../../elements/buttons"
+import { InputStyled, inputStyles } from "../../../elements/input"
+import Modal from "../../../elements/modal"
+import { useOutsideAlerter } from "../../../../hooks/outsideAlerter"
+import DatePicker, { registerLocale } from "react-datepicker"
+import { firestore } from "../../../../services/firebase"
 
-import 'react-datepicker/dist/react-datepicker.css';
-import ru from 'date-fns/locale/ru';
-import { Dropdown } from '../../../elements/dropdown';
-import PhoneInput from '../../../elements/phone-input';
-import PlaceOrder from '../../../../services/placeOrder';
+import "react-datepicker/dist/react-datepicker.css"
+import ru from "date-fns/locale/ru"
+import { Dropdown } from "../../../elements/dropdown"
+import PhoneInput from "../../../elements/phone-input"
+import PlaceOrder from "../../../../services/placeOrder"
 
-registerLocale('ru', ru);
+registerLocale("ru", ru)
 
 const OrderPageStyled = styled.div`
   max-width: 800px;
@@ -61,7 +61,7 @@ const OrderPageStyled = styled.div`
           -moz-box-sizing: border-box; /* Firefox, other Gecko */
           box-sizing: border-box;
           font-size: 16px;
-          font-family: 'Roboto', sans-serif;
+          font-family: "Roboto", sans-serif;
           &::placeholder {
             color: ${({ theme }) => theme.textLightGrey};
           }
@@ -85,7 +85,7 @@ const OrderPageStyled = styled.div`
       }
     }
   }
-`;
+`
 
 const ModalContentStyled = styled.div`
   display: grid;
@@ -128,11 +128,11 @@ const ModalContentStyled = styled.div`
   .modal_button {
     padding: 50px;
   }
-`;
+`
 
 const DatePickerStyled = styled(DatePicker)`
   ${inputStyles}
-`;
+`
 
 const OrderPage = ({
   backToMain,
@@ -149,16 +149,23 @@ const OrderPage = ({
   deliveryDateHuman,
   name,
   address,
-  weight
+  weight,
 }) => {
-  const { visible, setVisible, ref } = useOutsideAlerter(false);
-  const [loading, setLoading] = useState(0);
+  const { visible, setVisible, ref } = useOutsideAlerter(false)
+  const [loading, setLoading] = useState(0)
 
   async function makeOrderClick() {
-    setLoading(1);
-    await PlaceOrder({deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone, name, address, weight})
-    setLoading(0);
-    setVisible(true);
+    setLoading(1)
+    try {
+      await PlaceOrder({ deliveryDateHuman, deliveryTime, phoneOnUnloading,
+            orderComment, time, phone,
+            name, address, weight,
+          })
+      setVisible(true)
+    } catch (error) {
+      console.log(error)
+    }
+    setLoading(0)
   }
 
   return (
@@ -170,12 +177,12 @@ const OrderPage = ({
             <span className="input_label">* Дата доставки</span>
             <DatePickerStyled
               placeholderText="Выберете дату"
-              selected={deliveryDate || ''}
+              selected={deliveryDate || ""}
               minDate={new Date()}
               locale="ru"
               dateFormat="dd-MM-yyyy"
               onChange={date => {
-                setDeliveryDate(date);
+                setDeliveryDate(date)
               }}
             />
           </div>
@@ -186,17 +193,17 @@ const OrderPage = ({
               selectedItem={deliveryTime}
               withBorder={true}
               list={[
-                { title: '09:00', id: 0 },
-                { title: '10:00', id: 1 },
-                { title: '11:00', id: 2 },
-                { title: '12:00', id: 3 },
-                { title: '13:00', id: 4 },
-                { title: '14:00', id: 5 },
-                { title: '15:00', id: 6 },
-                { title: '16:00', id: 7 },
-                { title: '17:00', id: 8 },
-                { title: '18:00', id: 9 },
-                { title: '19:00', id: 10 },
+                { title: "09:00", id: 0 },
+                { title: "10:00", id: 1 },
+                { title: "11:00", id: 2 },
+                { title: "12:00", id: 3 },
+                { title: "13:00", id: 4 },
+                { title: "14:00", id: 5 },
+                { title: "15:00", id: 6 },
+                { title: "16:00", id: 7 },
+                { title: "17:00", id: 8 },
+                { title: "18:00", id: 9 },
+                { title: "19:00", id: 10 },
               ]}
             />
           </div>
@@ -210,7 +217,7 @@ const OrderPage = ({
             <span className="input_label">Добавить коментарий</span>
             <textarea
               placeholder="Например, время доставки и тд."
-              value={orderComment || ''}
+              value={orderComment || ""}
               onChange={e => setComment(e.target.value)}
               className="text_area"></textarea>
           </div>
@@ -249,8 +256,8 @@ const OrderPage = ({
         </ModalContentStyled>
       </Modal>
     </OrderPageStyled>
-  );
-};
+  )
+}
 
 const mapDispatchToProps = dispatch => ({
   backToMain: () => dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM }),
@@ -258,7 +265,7 @@ const mapDispatchToProps = dispatch => ({
   setDeliveryTime: value => dispatch({ type: t.SET_DELIVERY_TIME, payload: value }),
   setPhone: value => dispatch({ type: t.SET_PHONE_ON_UNLOADING, payload: value }),
   setComment: value => dispatch({ type: t.SET_ORDER_COMMENT, payload: value }),
-});
+})
 const mapStateToProps = ({ order, globalData, firstPage }) => ({
   deliveryDate: order.deliveryDate,
   deliveryDateHuman: order.deliveryDateHuman,
@@ -269,6 +276,6 @@ const mapStateToProps = ({ order, globalData, firstPage }) => ({
   phone: firstPage.customerPhone,
   name: firstPage.customerName,
   address: firstPage.customerAddress,
-  weight: firstPage.materialWeight
-});
-export default connect(mapStateToProps, mapDispatchToProps)(OrderPage);
+  weight: firstPage.materialWeight,
+})
+export default connect(mapStateToProps, mapDispatchToProps)(OrderPage)

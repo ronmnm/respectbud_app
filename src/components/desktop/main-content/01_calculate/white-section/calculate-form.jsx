@@ -11,6 +11,7 @@ import { getPrice } from "../../../../../services/get-price"
 import InputPlaces from "./places-input"
 
 import { history } from "../../main-content"
+import { checkWeight } from "../../../../../utils/utils"
 
 const CalculateFormStyled = styled.div`
   width: 100%;
@@ -145,7 +146,7 @@ const CalculateForm = ({
                 !customerPaymentMethod ||
                 !selectedCoordinates ||
                 !addr ||
-                !weight
+                checkWeight(weight)
               }
               onClick={handleCalculateClick}>
               Рассчитать

@@ -28,8 +28,13 @@ const ResultStyled = styled.div`
   }
   .buttons_wrap {
     display: grid;
-    grid-template-columns: minmax(150px, 240px) minmax(150px, 240px);
+    grid-template-columns: repeat(auto-fill, minmax(150px, 240px));
+    grid-auto-flow: column;
     column-gap: 20px;
+    div {
+      min-width: 200px;
+    }
+    /* width: max-content; */
   }
 `
 
@@ -39,8 +44,12 @@ const ResultPage = ({ dispatch, finalPrice, price30t }) => {
     console.log("клиент нажал рассчитать заново десктоп")
     history.push("/")
   }
-  const handleProceedToOrder = () => {
-    dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.ORDER_PAGE })
+  // const handleProceedToOrder = () => {
+  //   dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.ORDER_PAGE })
+  // }
+  function handle30tOrder() {
+    dispatch({ type: t.SET_FINAL_PRICE, payload: price30t })
+    dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: 30 })
   }
   return (
     <ResultStyled>
@@ -49,17 +58,24 @@ const ResultPage = ({ dispatch, finalPrice, price30t }) => {
         Цена с доставкой составляет: <span>{finalPrice} грн</span>{" "}
       </h3>
       {price30t && (
-        <h3 style={{fontSize: '16px'}}>
-          Цена 30-ти тонн с доствкой: <span>{price30t} грн</span>{" "}
+        <h3 style={{ fontSize: "16px" }}>
+          Цена 30-ти тонн с доставкой: <span>{price30t} грн</span>{" "}
         </h3>
       )}
       <div className="buttons_wrap">
         <div>
           <GreyButton onClick={handleBack}>Рассчитать заново</GreyButton>
         </div>
+        {price30t && (
+          <div>
+            <NavLink to="/order">
+              <GreyButton onClick={handle30tOrder}>Заказать 30т</GreyButton>
+            </NavLink>
+          </div>
+        )}
         <div>
           <NavLink to="/order">
-            <PrimaryButton onClick={handleProceedToOrder}>Заказать</PrimaryButton>
+            <PrimaryButton>Заказать</PrimaryButton>
           </NavLink>
         </div>
       </div>
