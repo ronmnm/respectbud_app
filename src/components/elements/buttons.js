@@ -29,8 +29,9 @@ const PrimaryButtonStyled = styled.span`
     transition: 0s;
     border: 1px solid ${({ theme }) => theme.black};
   }
-  ${({ primaryDisable }) => {
-    if (primaryDisable) {
+
+  ${({ primaryDisable, loading }) => {
+    if (primaryDisable || loading) {
       return css`
         background-color: ${({ theme }) => theme.yellowPrimaryDis};
         color: #c9c183;

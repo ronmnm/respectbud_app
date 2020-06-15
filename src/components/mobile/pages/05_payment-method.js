@@ -12,7 +12,7 @@ import { Svg7 } from '../../../static/7';
 import { getPrice } from '../../../services/get-price';
 // import { createBrowserHistory } from 'history';
 import { NavLink, Router, withRouter } from 'react-router-dom';
-import ResultPage from '../../desktop/main-content/result-section/result-page';
+import ResultPage from '../../desktop/main-content/02_result/result-page';
 import { history } from '../mobile';
 
 // const history = createBrowserHistory();

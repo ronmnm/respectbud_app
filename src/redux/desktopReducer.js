@@ -63,7 +63,7 @@ const materialSelectionState = {
   materialTitle: null,
   materialsList: materialsList,
 
-  materialTypeTitle: 'Песок речной',
+  materialTypeTitle: null,
   materialType: null,
   materialsTypeList: null,
 
@@ -76,8 +76,8 @@ const materialSelectionState = {
   customerName: null,
   customerOrganization: null,
   customerPhone: 0,
-  customerPaymentMethod: 'Наличный расчет',
-  paymentMethodAlias: 'nal',
+  customerPaymentMethod: null,
+  paymentMethodAlias: null,
   customerAddress: null,
 };
 

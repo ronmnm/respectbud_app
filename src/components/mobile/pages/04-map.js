@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 import { LabelStyled } from './01-anketa';
 import { InputStyled } from '../../elements/input';
 import * as t from '../../../redux/actionTypes';
-import MapComponent from '../../desktop/main-content/main-section/white-section/map';
+import MapComponent from '../../desktop/main-content/01_calculate/white-section/map';
 import { NavLink } from 'react-router-dom';
-import InputPlaces from '../../desktop/main-content/main-section/white-section/places-input';
+import InputPlaces from '../../desktop/main-content/01_calculate/white-section/places-input';
 
 const MapStyled = styled(AnketaPageStyled)`
   .content_wrapper {
