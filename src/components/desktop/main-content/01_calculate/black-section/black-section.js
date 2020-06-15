@@ -1,10 +1,12 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { InputStyled } from "../../../../elements/input"
 import { Dropdown } from "../../../../elements/dropdown"
 import { connect } from "react-redux"
 import * as t from "../../../../../redux/actionTypes"
 import SvgArrow from "../../../../../static/arrow"
+import Tooltip from "../../../../elements/tooltip"
+import { checkWeight } from "../../../../../utils/utils"
 
 const BlackStyled = styled.div`
   background-color: ${({ theme }) => theme.black};
@@ -36,7 +38,7 @@ const BlackStyled = styled.div`
           }
           &:hover {
             cursor: pointer;
-            background-color: ${({ theme }) => theme.grey};
+            /* background-color: ${({ theme }) => theme.grey}; */
             svg {
               fill: ${({ theme }) => theme.black};
             }
@@ -68,7 +70,7 @@ const LabelStyled = styled.div`
 
 const InputStyledNumber = styled(InputStyled)`
   -moz-appearance: textfield;
-
+  border: 1px solid black;
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     display: none;
@@ -76,6 +78,17 @@ const InputStyledNumber = styled(InputStyled)`
     -webkit-appearance: none;
     margin: 0;
   }
+  &:focus {
+    /* border: 1px solid black; */
+  }
+`
+let HintWeightStyled = styled.div`
+  display: inline-block;
+  margin-left: 5px;
+  position: relative;
+  height: 100%;
+  width: 30px;
+  height: 12px;
 `
 
 const BlackSection = ({
@@ -89,6 +102,16 @@ const BlackSection = ({
   materialVolume,
   dispatch,
 }) => {
+  let [weightError, setWeightError] = useState(false)
+
+  useEffect(() => {
+    if (checkWeight(materialWeight)) {
+      setWeightError(true)
+    } else {
+      setWeightError(false)
+    }
+  }, [materialWeight])
+
   const handleMaterialWeight = value => {
     dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: +value })
   }
@@ -122,16 +145,22 @@ const BlackSection = ({
         </div>
         <div className="number_input_wrapper">
           <LabelStyled>Вес (тонн)</LabelStyled>
+          <HintWeightStyled>
+            <Tooltip onError={weightError} text="Вы можете ввести значение от 1 до 30 тонн или 40 тонн." />
+          </HintWeightStyled>
           <div className="arrows">
             <div className="arrow_up" onClick={() => handleArrowClick("inc", t.SET_MATERIAL_WEIGHT, materialWeight)}>
               <SvgArrow />
             </div>
-            <div onClick={() => handleArrowClick("dec", t.SET_MATERIAL_WEIGHT, materialWeight)} className="arrow_bottom">
+            <div
+              onClick={() => handleArrowClick("dec", t.SET_MATERIAL_WEIGHT, materialWeight)}
+              className="arrow_bottom">
               <SvgArrow />
             </div>
           </div>
           <InputStyledNumber
-
+            border
+            hasError={weightError}
             value={materialWeight || ""}
             onChange={e => handleMaterialWeight(e.target.value)}
             disabledInput={!materialTypeTitle}
@@ -145,7 +174,9 @@ const BlackSection = ({
             <div className="arrow_up" onClick={() => handleArrowClick("inc", t.SET_MATERIAL_VOLUME, materialVolume)}>
               <SvgArrow />
             </div>
-            <div onClick={() => handleArrowClick("dec", t.SET_MATERIAL_VOLUME, materialVolume)} className="arrow_bottom">
+            <div
+              onClick={() => handleArrowClick("dec", t.SET_MATERIAL_VOLUME, materialVolume)}
+              className="arrow_bottom">
               <SvgArrow />
             </div>
           </div>
