@@ -13,7 +13,7 @@ export default function modifyResults(results, weight, materialType, paymentMeth
     results[i].material = materialType
     results[i].paymentMethod = paymentMethod
     results[i].address = address
-    results[i].weight2 = weight
+    results[i].weight = weight
 
     if (results[i].supplierName === "K.1_Шамраевский" && results[i].truck === '30 Tонник') {
       results[i].priceForCustomer = null
