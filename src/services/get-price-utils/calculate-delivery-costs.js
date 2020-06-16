@@ -8,7 +8,7 @@ export function calculateDeliveryCost(distances, weight) {
     return _getCostFor7(distances, "Зил")
     // return _getCostFor_7_10_20(distances, 35, 500, "Зил")
   } else if (8 <= weight && weight <= 10) {
-    return _getCostFor_7_10_20(distances, 35, 600, "Камаз")
+    return _getCostFor_7_10_20(distances, 35, 600, "Камаз ")
   } else if (11 <= weight && weight <= 20) {
     // eсли вес >= 20 то + карьеры по песку
     return _getCostFor20(distances, "Маз")
