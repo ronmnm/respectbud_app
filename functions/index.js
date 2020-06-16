@@ -1,31 +1,28 @@
 require("dotenv").config()
-const functions = require("firebase-functions")
-const admin = require("firebase-admin")
+const { functions, db } = require("./firebase")
 const openrouteservice = require("openrouteservice-js")
-
 const sendEmail = require("./src/send-mail")
-
-admin.initializeApp(functions.config().firebase)
-let firestore = admin.firestore()
+const changeOrder = require("./src/changeOrderTo30t")
 
 let Matrix = new openrouteservice.Matrix({
   api_key: process.env.OPEN_ROUTE_SERVICE_KEY,
 })
 
 exports.getPrice = functions.region("europe-west1").https.onCall((data, context) => {})
+exports.changeOrder = changeOrder
 
 exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, context) => {
   let { deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone, name, address, weight } = data
   try {
-    await firestore.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).update({
+    await db.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).update({
       deliveryDateHuman,
       deliveryTime,
       phoneOnUnloading,
       orderComment,
       phone,
       name,
-      address,
-      weight
+
+      weight,
     })
   } catch (err) {
     console.log(err)
@@ -34,7 +31,7 @@ exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, 
   let rawData
   try {
     rawData = await (
-      await firestore.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).get()
+      await db.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).get()
     ).data()
     // console.log(rawData)
   } catch (err) {
@@ -57,7 +54,8 @@ exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, 
   //   })
 
   // Отравка данных о заказе на почту
-  sendEmail(phone, time, rawData)
+
+  sendEmail(phone, time, rawData, null)
 })
 
 //// old varik
