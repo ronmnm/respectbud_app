@@ -8,8 +8,16 @@ const additionalStylesWithBlackBorder = css`
 `;
 
 export const errorStyles = css`
-  background-color: #fff2f2;
-  border: 1px solid tomato;
+  background-color: #ffe0db;
+  border: 1px solid tomato !important;
+  color: #703125;
+  &:focus {
+    border: 1px solid tomato;
+  }
+
+  &::placeholder {
+    color: #ffb9ad;
+  }
 `;
 
 const disabledStyles = css`
@@ -21,6 +29,7 @@ const disabledStyles = css`
   &:hover {
     cursor: default;
   }
+
 `;
 
 export const inputStyles = css`
@@ -60,8 +69,9 @@ const dateInputStyling = css`
 export const InputStyled = styled.input`
   ${inputStyles}
   ${({ border }) => (border ? null : additionalStylesWithBlackBorder)}
-  ${({ hasError }) => (hasError ? errorStyles : null)}
+  
   ${({ disabledInput }) => (disabledInput ? disabledStyles : null)}
   ${({ type }) => (type === 'date' ? dateInputStyling : null)}
+  ${({ hasError }) => (hasError ? errorStyles : null)}
 
 `;

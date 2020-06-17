@@ -3,9 +3,10 @@ import styled from "styled-components"
 
 const TooltipStyled = styled.span`
   position: relative;
+  margin-left: 5px;
   span {
     position: absolute;
-    bottom: 15px;
+    bottom: 32px;
     left: -50px;
     padding: 10px 14px;
     line-height: 15px;
@@ -14,7 +15,7 @@ const TooltipStyled = styled.span`
     border: 1px solid #ccc;
     color: ${({ theme }) => theme.textBlack};
     border-radius: 5px;
-    font-size: 11px;
+    font-size: 12px;
     z-index: 12;
     text-align: center;
     box-shadow: 0 2px 10px rgb(0, 0, 0, 0.2);
