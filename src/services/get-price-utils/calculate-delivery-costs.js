@@ -20,16 +20,15 @@ export function calculateDeliveryCost(distances, weight) {
   }
 
   function _adjustDistance(distance) {
-    if (distance <= 10) return +distance + 2
-    if (distance <= 20) return +distance + 3
-    if (distance <= 30) return +distance + 5
-    if (distance > 30) return +distance + 6
+    if (distance <= 20) return +distance + 1
+    if (distance <= 30) return +distance + 3
+    if (distance <= 50) return +distance + 5
+    if (distance >= 51) return +distance + 6
   }
-
 
   /**
    * Стомость доставки для Зила ( вес <= 7 )
-   * 
+   *
    */
   function _getCostZil(distances, truck) {
     return distances.map(kmArray => {
@@ -46,17 +45,16 @@ export function calculateDeliveryCost(distances, weight) {
       } else if (16 <= distance && distance <= 20) {
         deliveryPrice = distance * 60
       } else if (distance >= 21) {
-        deliveryPrice = ((distance * 2) / 100) * 35 * 15 * 1.18 + 1000
+        deliveryPrice = ((distance * 2) / 100) * 35 * 18 * 1.18 + 1000
       }
 
       return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
     })
   }
 
-
   /**
    * Стомость доставки для Камаза (8 <= вес <= 10)
-   * 
+   *
    */
   function _getCostKamaz(distances, truck) {
     return distances.map(kmArray => {
@@ -73,7 +71,7 @@ export function calculateDeliveryCost(distances, weight) {
       } else if (16 <= distance && distance <= 20) {
         deliveryPrice = distance * 65
       } else if (distance >= 21) {
-        deliveryPrice = ((distance * 2) / 100) * 35 * 15 * 1.18 + 1100
+        deliveryPrice = ((distance * 2) / 100) * 35 * 18 * 1.18 + 1100
       }
 
       return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
@@ -82,7 +80,7 @@ export function calculateDeliveryCost(distances, weight) {
 
   /**
    * Стомость доставки для Маза (11 <= вес <= 20)
-   * 
+   *
    */
   function _getCostMaz(distances, truck) {
     let mazPricesArray = [
@@ -137,6 +135,56 @@ export function calculateDeliveryCost(distances, weight) {
       3980,
       4050,
       4117,
+      4180,
+      4231,
+      4282,
+      4332,
+      4383,
+      4434,
+      4484,
+      4535,
+      4593,
+      4643,
+      4694,
+      4744,
+      4795,
+      4846,
+      4896,
+      4960,
+      5010,
+      5061,
+      5112,
+      5162,
+      5219,
+      5264,
+      5320,
+      5371,
+      5422,
+      5472,
+      5536,
+      5586,
+      5637,
+      5675,
+      5720,
+      5770,
+      5802,
+      5852,
+      5890,
+      5941,
+      5979,
+      6030,
+      6062,
+      6112,
+      6156,
+      6205,
+      6245,
+      6283,
+      6328,
+      6378,
+      6417,
+      6461,
+      6511,
+      6560,
     ]
 
     return distances.map(kmArray => {
@@ -148,11 +196,12 @@ export function calculateDeliveryCost(distances, weight) {
         deliveryPrice = 700
       } else if (5 <= distance && distance <= 10) {
         deliveryPrice = 900
-      } else if (11 <= distance && distance <= 50) {
+      } else if (distance >= 11) {
         deliveryPrice = mazPricesArray[distance]
-      } else if (distance >= 51) {
-        deliveryPrice = 5000
       }
+      // } else if (distance >= 51) {
+      //   deliveryPrice = 5000
+      // }
 
       return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
     })
@@ -160,13 +209,12 @@ export function calculateDeliveryCost(distances, weight) {
 
   /**
    * Стомость доставки для 30-ти тонника (21 <= вес <= 30)
-   * 
+   *
    */
   function _getCost30(distances, truck) {
     return distances.map(kmArray => {
       let distance = _adjustDistance(Math.round(kmArray[0]))
       let deliveryPrice
-
 
       if (1 <= distance && distance <= 5) {
         deliveryPrice = 900
@@ -186,17 +234,16 @@ export function calculateDeliveryCost(distances, weight) {
         deliveryPrice = distance * 57.9
       }
 
-      deliveryPrice += 200 // + 200 грн
+      // deliveryPrice += 200 // + 200 грн
       return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
     })
   }
 
   /**
    * Стомость доставки для 40-ти тонника (31 <= вес <= 40)
-   * 
+   *
    */
   function getCost40(distances, truck) {
-
     return distances.map(kmArray => {
       let distance = _adjustDistance(Math.round(kmArray[0]))
 
@@ -228,11 +275,11 @@ export function calculateDeliveryCost(distances, weight) {
   }
 }
 
-  // function _getCostFor_7_10_20(distances, koef1, koef2, truck) {
-  //   return distances.map(kmArray => {
-  //     let distance = _adjustDistance(Math.round(kmArray[0]))
-  //     let x = ((distance * 2) / 100) * koef1 * 15 + 200
-  //     let deliveryPrice = Math.floor(x * 0.18 + x + koef2 + 200)
-  //     return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
-  //   })
-  // }
+// function _getCostFor_7_10_20(distances, koef1, koef2, truck) {
+//   return distances.map(kmArray => {
+//     let distance = _adjustDistance(Math.round(kmArray[0]))
+//     let x = ((distance * 2) / 100) * koef1 * 15 + 200
+//     let deliveryPrice = Math.floor(x * 0.18 + x + koef2 + 200)
+//     return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
+//   })
+// }
