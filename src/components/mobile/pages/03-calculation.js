@@ -1,13 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-import { AnketaPageStyled } from './01-anketa';
-import MobileHeader from './header/header';
-import { PrimaryButton, GreyButton } from '../../elements/buttons';
-import { connect } from 'react-redux';
-import { LabelStyled } from './01-anketa';
-import { InputStyled } from '../../elements/input';
-import * as t from '../../../redux/actionTypes';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from "react"
+import styled from "styled-components"
+import { AnketaPageStyled } from "./01-anketa"
+import MobileHeader from "./header/header"
+import { PrimaryButton } from "../../elements/buttons"
+import { connect } from "react-redux"
+import { LabelStyled } from "./01-anketa"
+import { InputStyled } from "../../elements/input"
+import * as t from "../../../redux/actionTypes"
+import { checkWeight } from "../../../utils/utils"
+import Tooltip from "../../elements/tooltip"
+import { history } from "../mobile"
 
 const CalculationVolumeStyled = styled(AnketaPageStyled)`
   .additional_text {
@@ -17,15 +19,30 @@ const CalculationVolumeStyled = styled(AnketaPageStyled)`
     text-align: center;
     margin-bottom: 35px;
   }
-`;
+`
+/**
+ * CalculationVolumePage
+ * @param {*} param0
+ */
 function CalculationVolumePage({ dispatch, materialWeight, materialVolume }) {
+  let [weightError, setWeightError] = useState(false)
+  // let [isButtonDisable, setIsButtonDisable] = useState(true)
+
+  useEffect(() => {
+    if (checkWeight(materialWeight)) {
+      setWeightError(true)
+    } else {
+      setWeightError(false)
+    }
+  }, [materialWeight])
+
   function handleNextClick() {
-    dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.MAP_PAGE });
+    if(!weightError || materialWeight) history.push("./map")
   }
 
   return (
     <CalculationVolumeStyled>
-      <MobileHeader title="Калькулятор объема" withButton navLinkTo='material' />
+      <MobileHeader title="Калькулятор объема" withButton navLinkTo="material" />
       <div>
         <p className="additional_text">
           Введите вес для автоматического
@@ -33,8 +50,10 @@ function CalculationVolumePage({ dispatch, materialWeight, materialVolume }) {
         </p>
         <div className="input_field_wrapper">
           <LabelStyled>Вес (тонн)</LabelStyled>
+          <Tooltip onError={weightError} text="Вы можете ввести значение от 1 до 30 тонн или 40 тонн." />
           <InputStyled
-            value={materialWeight || ''}
+            hasError={weightError}
+            value={materialWeight || ""}
             onChange={e => dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: +e.target.value })}
             placeholder="Вес"
             step="1"
@@ -45,9 +64,8 @@ function CalculationVolumePage({ dispatch, materialWeight, materialVolume }) {
         <div className="input_field_wrapper">
           <LabelStyled>Объём (м³)</LabelStyled>
           <InputStyled
-            value={materialVolume || ''}
+            value={materialVolume || ""}
             onChange={e => dispatch({ type: t.SET_MATERIAL_VOLUME, payload: e.target.value })}
-            // disabledInput={!materialTypeTitle}
             placeholder="Обьем"
             type="number"
             border
@@ -55,21 +73,16 @@ function CalculationVolumePage({ dispatch, materialWeight, materialVolume }) {
         </div>
       </div>
       <div>
-        {/* <GreyButton
-          onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.VYBOR_TOVARA_PAGE })}
-          style={{ marginBottom: '20px' }}>
-          Назад
-        </GreyButton> */}
-        <NavLink to='/map'>
-        <PrimaryButton primaryDisable={!materialWeight} onClick={handleNextClick}>Далее</PrimaryButton>
-        </NavLink>
+        <PrimaryButton primaryDisable={!materialWeight || checkWeight(materialWeight)} onClick={handleNextClick}>
+          Далее
+        </PrimaryButton>
       </div>
     </CalculationVolumeStyled>
-  );
+  )
 }
 
 const mapStateToProps = ({ firstPage }) => ({
   materialWeight: firstPage.materialWeight,
   materialVolume: firstPage.materialVolume,
-});
-export default connect(mapStateToProps)(CalculationVolumePage);
+})
+export default connect(mapStateToProps)(CalculationVolumePage)

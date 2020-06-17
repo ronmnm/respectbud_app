@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { AnketaPageStyled } from './01-anketa';
-import MobileHeader from './header/header';
-import { PrimaryButton, GreyButton } from '../../elements/buttons';
-import { connect } from 'react-redux';
-import { LabelStyled } from './01-anketa';
-import { InputStyled, inputStyles } from '../../elements/input';
-import * as t from '../../../redux/actionTypes';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import ru from 'date-fns/locale/ru';
-import PhoneInput from '../../elements/phone-input';
-import { Svg7 } from '../../../static/7';
-import { history } from '../mobile';
-import PlaceOrder from '../../../services/placeOrder';
+import React, { useState } from "react"
+import styled from "styled-components"
+import { AnketaPageStyled } from "./01-anketa"
+import MobileHeader from "./header/header"
+import { PrimaryButton } from "../../elements/buttons"
+import { connect } from "react-redux"
+import { LabelStyled } from "./01-anketa"
+import { inputStyles } from "../../elements/input"
+import * as t from "../../../redux/actionTypes"
+import DatePicker, { registerLocale } from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
+import ru from "date-fns/locale/ru"
+import PhoneInput from "../../elements/phone-input"
+import { Svg7 } from "../../../static/7"
+import { history } from "../mobile"
+import PlaceOrder from "../../../services/placeOrder"
 
-registerLocale('ru', ru);
+registerLocale("ru", ru)
 
 const DatePickerStyled = styled(DatePicker)`
   ${inputStyles}
-`;
+`
 
 const OrderStyled = styled(AnketaPageStyled)`
   .content_wrapper {
@@ -50,7 +50,7 @@ const OrderStyled = styled(AnketaPageStyled)`
       height: 100%;
       padding: 13px 13px 0 13px;
       font-size: 16px;
-      font-family: 'Roboto', sans-serif;
+      font-family: "Roboto", sans-serif;
       width: 100%;
       &::placeholder {
         color: ${({ theme }) => theme.textLightGrey};
@@ -64,17 +64,28 @@ const OrderStyled = styled(AnketaPageStyled)`
       }
     }
   }
-`;
+`
 
-function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment, deliveryDateHuman, deliveryTime, time, phone }) {
-
+function OrderPage({
+  dispatch, deliveryDate, phoneOnUnloading,
+  orderComment, deliveryDateHuman, deliveryTime,
+  time, phone, name, address, weight,
+}) {
   const [loading, setLoading] = useState(0)
 
   const makeOrderTap = async () => {
     setLoading(1)
-    await PlaceOrder({deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone})
+    try {
+      await PlaceOrder({
+        deliveryDateHuman, deliveryTime, phoneOnUnloading,
+        orderComment, time, phone,
+        name, address, weight,
+      })
+      history.push("/final-page")
+    } catch (err) {
+      console.error(err)
+    }
     setLoading(0)
-    history.push('/final-page');
   }
 
   return (
@@ -91,7 +102,7 @@ function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment, del
             withPortal
             fixedHeight
             onFocus={e => (e.target.readOnly = true)}
-            selected={deliveryDate || ''}
+            selected={deliveryDate || ""}
             minDate={new Date()}
             locale="ru"
             dateFormat="dd-MM-yyyy"
@@ -107,22 +118,22 @@ function OrderPage({ dispatch, deliveryDate, phoneOnUnloading, orderComment, del
           />
         </div>
         <div className="text_area_wrapper">
-          <LabelStyled>* Добавить коментарий</LabelStyled>
+          <LabelStyled>* Добавить комментарий</LabelStyled>
           <textarea
-            placeholder="Комент"
-            value={orderComment || ''}
+            placeholder="Комментарий"
+            value={orderComment || ""}
             onChange={e => dispatch({ type: t.SET_ORDER_COMMENT, payload: e.target.value })}
             className="text_area"></textarea>
         </div>
       </div>
-        <PrimaryButton
-          loading={loading}
-          primaryDisable={!orderComment || phoneOnUnloading.length !== 19 || !deliveryDate}
-          onClick={makeOrderTap}>
-          Оформить заказ
-        </PrimaryButton>
+      <PrimaryButton
+        loading={loading}
+        primaryDisable={!orderComment || phoneOnUnloading.length !== 19 || !deliveryDate}
+        onClick={makeOrderTap}>
+        Оформить заказ
+      </PrimaryButton>
     </OrderStyled>
-  );
+  )
 }
 
 const mapStateToProps = ({ globalData, firstPage, order }) => ({
@@ -133,6 +144,9 @@ const mapStateToProps = ({ globalData, firstPage, order }) => ({
   deliveryDateHuman: order.deliveryDateHuman,
   time: globalData.time,
   phone: firstPage.customerPhone,
-});
+  name: firstPage.customerName,
+  address: firstPage.customerAddress,
+  weight: firstPage.materialWeight,
+})
 
-export default connect(mapStateToProps)(OrderPage);
+export default connect(mapStateToProps)(OrderPage)

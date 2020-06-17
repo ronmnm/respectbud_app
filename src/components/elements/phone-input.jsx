@@ -12,14 +12,14 @@ const PhoneInput = ({value, onChange}) => {
    // const [value, setValue] = useState(null);
    const [error, setError] = useState(0);
 
-   const handleChange = phoneNumb => {
-      // setValue(phoneNumb);
-      if (phoneNumb.length !== 19) {
-         // setError(1);
-      } else {
-         // setError(0);
-      }
-   };
+  //  const handleChange = phoneNumb => {
+  //     setValue(phoneNumb);
+  //     if (phoneNumb.length !== 19) {
+  //        setError(1);
+  //     } else {
+  //        setError(0);
+  //     }
+  //  };
    const handleFocus =() => {
       setError(0);
    }
