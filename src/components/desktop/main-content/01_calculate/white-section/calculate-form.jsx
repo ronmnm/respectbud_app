@@ -12,6 +12,7 @@ import InputPlaces from "./places-input"
 
 import { history } from "../../main-content"
 import { checkWeight } from "../../../../../utils/utils"
+import notifyBot from "../../../../../services/notify-bot"
 
 const CalculateFormStyled = styled.div`
   width: 100%;
@@ -85,12 +86,10 @@ const CalculateForm = ({
     }
     setIsLoading(0)
     history.push("/result")
-    // dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.RESULT_PAGE })
+    notifyBot({phone: `${customerName} нажал "Рассчитать"`})
   }
 
-  function getError() {
-    this.setState({ go: "bla" })
-  }
+  // function getError() {}
   return (
     <CalculateFormStyled>
       <div>
@@ -100,7 +99,7 @@ const CalculateForm = ({
               <span className="input_label">* Ваше имя</span>
               <InputStyled
                 border
-                placeholder="Петро"
+                placeholder="Имя"
                 value={customerName || ""}
                 onChange={e => dispatch({ type: t.SET_CUSTOMER_NAME, payload: e.target.value })}
               />
@@ -151,7 +150,7 @@ const CalculateForm = ({
               onClick={handleCalculateClick}>
               Рассчитать
             </PrimaryButton>
-            {/* <button onClick={handleCalculateClick}>оп</button> */}
+            {/* <button onClick={getError}>оп</button> */}
           </div>
         </div>
         <span className="necessary_field">* - Обязательное к заполнению поле</span>

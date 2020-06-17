@@ -33,7 +33,7 @@ function Map({ selectedCoordinates, dispatch }) {
     let geocoder = new window.google.maps.Geocoder()
 
     geocoder.geocode({ location: latlng }, function (results, status) {
-      if (status == "OK") {
+      if (status === "OK") {
         dispatch({ type: t.SET_CUSTOMER_ADDRESS, payload: results[0].formatted_address })
       } else {
         console.log("Geocode was not successful for the following reason: " + status)

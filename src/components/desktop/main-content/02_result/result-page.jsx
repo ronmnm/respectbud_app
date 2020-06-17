@@ -5,6 +5,8 @@ import * as t from "../../../../redux/actionTypes"
 import { PrimaryButton, GreyButton } from "../../../elements/buttons"
 import { history } from "../main-content"
 import { NavLink } from "react-router-dom"
+import changeOrder from "../../../../services/set30tOrder"
+import notifyBot from "../../../../services/notify-bot"
 
 const ResultStyled = styled.div`
   display: grid;
@@ -38,18 +40,17 @@ const ResultStyled = styled.div`
   }
 `
 
-const ResultPage = ({ dispatch, finalPrice, price30t }) => {
+const ResultPage = ({ dispatch, finalPrice, price30t, phone, time, customerName, customerOrganization, materialTypeTitle, weight }) => {
+
   const handleBack = () => {
-    // dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM });
-    console.log("клиент нажал рассчитать заново десктоп")
+    notifyBot({phone: `${customerName} ушел в отказ, вот его номер${phone} Организация: ${customerOrganization} Товар: ${materialTypeTitle} Вес: ${weight} Цена ${finalPrice}`})
     history.push("/")
   }
-  // const handleProceedToOrder = () => {
-  //   dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.ORDER_PAGE })
-  // }
+
   function handle30tOrder() {
     dispatch({ type: t.SET_FINAL_PRICE, payload: price30t })
     dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: 30 })
+    changeOrder({ phone, time, price: price30t, })
   }
   return (
     <ResultStyled>
@@ -83,9 +84,16 @@ const ResultPage = ({ dispatch, finalPrice, price30t }) => {
   )
 }
 
-const mapStateToProps = ({ globalData }) => ({
+const mapStateToProps = ({ globalData, firstPage }) => ({
   finalPrice: globalData.finalPrice,
   price30t: globalData.price30t,
+  phone: firstPage.customerPhone,
+  time: globalData.time,
+  customerName: firstPage.customerName,
+  customerOrganization: firstPage.customerOrganization,
+  materialTypeTitle: firstPage.materialTypeTitle,
+  weight: firstPage.materialWeight,
+
 })
 
 export default connect(mapStateToProps)(ResultPage)

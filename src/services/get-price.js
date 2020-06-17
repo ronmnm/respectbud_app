@@ -1,6 +1,6 @@
-import { functions } from "./firebase"
+// import { functions } from "./firebase"
 import { firestore } from "./firebase"
-import firebase from "firebase/app"
+// import firebase from "firebase/app"
 import openrouteservice from "openrouteservice-js"
 
 import { filterSuppliersArray } from "./get-price-utils/filter-suppliers-array"
@@ -101,8 +101,8 @@ export async function getPrice2(address, materialTitle, materialType, weight, pa
  * @param weight amount of tons
  */
 export async function getPrice(address, materialTitle, materialType, weight, paymentMethod, coordinates, phone, time) {
-  if (materialType === "Супесь") return 1300
-  if (materialType === "Суглинок") return 1100
+  if (materialType === "Супесь") return {pickedPriceRound: 1300}
+  if (materialType === "Суглинок") return {pickedPriceRound: 1100}
   // 1. Получаем массив поставщиков из базы
   const snapshot = await firestore.collection("suppliers").get()
   const allSuppliers = snapshot.docs.map(doc => doc.data())

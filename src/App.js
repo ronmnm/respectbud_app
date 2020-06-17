@@ -17,12 +17,14 @@ function App({ dispatch }) {
       dispatch({ type: t.SET_CUSTOMER_PHONE, payload: storage.phone })
       dispatch({ type: t.SET_CUSTOMER_ORGANIZATION, payload: storage.organization })
     }
+    console.log('checkIfLoggedIn');
   }
-
+  checkIfLoggedIn()
+  
   useEffect(() => {
     ReactGA.initialize('UA-166957247-1')
     ReactGA.pageview(window.location.pathname + window.location.search);
-    checkIfLoggedIn()
+    
   }, [])
 
   if (isMobile) return <Mobile />

@@ -75,7 +75,7 @@ export default function InputPlaces({ dispatch, address }) {
       searchOptions={searchOptions}>
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
         <InputAutocompleteWrapperStyled isListVisible={suggestions.length > 0}>
-          <InputAutocompleteStyled border placeholder="Введите название улицы" {...getInputProps()} />
+          <InputAutocompleteStyled border placeholder="Введите адрес" {...getInputProps()} />
           <div className="list">
             {suggestions.map(item => {
               return (

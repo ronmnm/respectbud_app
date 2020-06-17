@@ -2,7 +2,7 @@
 
 export default function modifyResults(results, weight, materialType, paymentMethod, address, suppliers) {
   // 6.1 формула расчета для щебня с карьера когда === 30 тонн
-  const getShamraevskyPrice = distance => ((distance + 15) * 15 + 500) * 1.18 * 1.1 + 1100 + 500
+  const getShamraevskyPrice = distance => ((distance + 15) * 18 + 500) * 1.18 * 1.1 + 1100 + 500
 
   for (let i = 0; results.length > i; i++) {
     let materialPrice1t = suppliers[i].materials[materialType][paymentMethod]

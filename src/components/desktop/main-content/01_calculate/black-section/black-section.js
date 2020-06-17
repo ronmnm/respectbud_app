@@ -82,34 +82,16 @@ const InputStyledNumber = styled(InputStyled)`
     /* border: 1px solid black; */
   }
 `
-let HintWeightStyled = styled.div`
-  display: inline-block;
-  margin-left: 5px;
-  position: relative;
-  height: 100%;
-  width: 30px;
-  height: 12px;
-`
 
-const BlackSection = ({
-  materialsList,
-  materialsTypeList,
-  setMaterial,
-  setMaterialType,
-  materialTitle,
-  materialTypeTitle,
-  materialWeight,
-  materialVolume,
-  dispatch,
-}) => {
+const BlackSection = ({ materialsList, materialsTypeList, setMaterial,
+  setMaterialType, materialTitle, materialTypeTitle,
+  materialWeight, materialVolume, dispatch, }) => {
+
   let [weightError, setWeightError] = useState(false)
 
   useEffect(() => {
-    if (checkWeight(materialWeight)) {
-      setWeightError(true)
-    } else {
-      setWeightError(false)
-    }
+    if (checkWeight(materialWeight)) setWeightError(true)
+    else setWeightError(false)
   }, [materialWeight])
 
   const handleMaterialWeight = value => {
@@ -145,9 +127,9 @@ const BlackSection = ({
         </div>
         <div className="number_input_wrapper">
           <LabelStyled>Вес (тонн)</LabelStyled>
-          <HintWeightStyled>
+          {/* <div> */}
             <Tooltip onError={weightError} text="Вы можете ввести значение от 1 до 30 тонн или 40 тонн." />
-          </HintWeightStyled>
+          {/* </div> */}
           <div className="arrows">
             <div className="arrow_up" onClick={() => handleArrowClick("inc", t.SET_MATERIAL_WEIGHT, materialWeight)}>
               <SvgArrow />
