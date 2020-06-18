@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import { PrimaryButton } from "../../../../elements/buttons"
 import { InputStyled } from "../../../../elements/input"
@@ -62,6 +62,46 @@ const CalculateForm = ({
   materialTitle,
 }) => {
   const [isLoading, setIsLoading] = useState(0)
+  // async function notifyBeforeClose() {
+  //   await notifyBot({
+  //     event: "TAB_CLOSED",
+  //     payload: { phone, name: "yo", organization: "blo", material: "bla", weight, finalPrice: "mil" },
+  //   })
+  // }
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", async ev => {
+  //     ev.preventDefault()
+  //     return await notifyBeforeClose()
+  //   })
+  // }, [])
+  // useEffect(() => {
+  //   window.addEventListener("unload", function () {
+  //     let data = new FormData()
+  //     data.append("hello", "world")
+  //     navigator.sendBeacon("https://europe-west1-inbound-analogy-278220.cloudfunctions.net/leavePage", data)
+  //   })
+
+    // window.onbeforeunload = async () => {
+    //   return notifyBot({
+    //     event: "TAB_CLOSED",
+    //     payload: { phone, name: "yo", organization: "blo", material: "bla", weight, finalPrice: "mil" },
+    //   })
+    //   console.log("lorem tdoudeoudoen hdnoedh nudoen uoetdu tohed")
+    // }
+  // })
+  function fake() {
+    let real = 'https://europe-west1-inbound-analogy-278220.cloudfunctions.net/leavePage'
+    let fakeurl = 'http://localhost:5001/inbound-analogy-278220/europe-west1/leavePage'
+
+    navigator.sendBeacon(real, JSON.stringify({ab: 5, you: 'string'}))
+    // let obj = {}
+    // let arr = [...data]
+    // for(let i = 0; arr.length > i; i++){
+    //   obj[arr[i][0]] = arr[i][1]
+    // }
+    // console.log(obj)
+  }
+
 
   async function handleCalculateClick() {
     setIsLoading(1)
@@ -86,7 +126,7 @@ const CalculateForm = ({
     }
     setIsLoading(0)
     history.push("/result")
-    notifyBot({phone: `${customerName} нажал "Рассчитать"`})
+    notifyBot({ event: "DO_CALCULATION", payload: { phone, name: customerName, addr, weight, materialTypeTitle } })
   }
 
   // function getError() {}
@@ -150,7 +190,7 @@ const CalculateForm = ({
               onClick={handleCalculateClick}>
               Рассчитать
             </PrimaryButton>
-            {/* <button onClick={getError}>оп</button> */}
+            {/* <button onClick={fake}>оnohunoehunoehuoeп</button> */}
           </div>
         </div>
         <span className="necessary_field">* - Обязательное к заполнению поле</span>

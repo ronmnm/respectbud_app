@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import styled from "styled-components"
 import { connect } from "react-redux"
 import * as t from "../../../../redux/actionTypes"
@@ -40,17 +40,32 @@ const ResultStyled = styled.div`
   }
 `
 
-const ResultPage = ({ dispatch, finalPrice, price30t, phone, time, customerName, customerOrganization, materialTypeTitle, weight }) => {
+const ResultPage = ({ dispatch, finalPrice, price30t, phone, time, name, organization, material, weight }) => {
+  let dataForBot = { phone, name, organization, material, weight, finalPrice }
+
+  useEffect(() => {
+    let data = JSON.stringify(dataForBot)
+    const sendBeacon = () => {
+      let url = "https://europe-west1-inbound-analogy-278220.cloudfunctions.net/leavePage"
+      navigator.sendBeacon(url, data)
+    }
+    window.addEventListener("unload", sendBeacon)
+    console.log("unload")
+    return () => {
+      window.removeEventListener('unload', sendBeacon)
+      console.log("clear")
+    }
+  }, [])
 
   const handleBack = () => {
-    notifyBot({phone: `${customerName} ушел в отказ, вот его номер${phone} Организация: ${customerOrganization} Товар: ${materialTypeTitle} Вес: ${weight} Цена ${finalPrice}`})
+    notifyBot({ event: "CALC_AGAIN_BUTTON", payload: { ...dataForBot } })
     history.push("/")
   }
 
   function handle30tOrder() {
     dispatch({ type: t.SET_FINAL_PRICE, payload: price30t })
     dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: 30 })
-    changeOrder({ phone, time, price: price30t, })
+    changeOrder({ phone, time, price: price30t })
   }
   return (
     <ResultStyled>
@@ -89,11 +104,11 @@ const mapStateToProps = ({ globalData, firstPage }) => ({
   price30t: globalData.price30t,
   phone: firstPage.customerPhone,
   time: globalData.time,
-  customerName: firstPage.customerName,
-  customerOrganization: firstPage.customerOrganization,
-  materialTypeTitle: firstPage.materialTypeTitle,
+  name: firstPage.customerName,
+  organization: firstPage.customerOrganization,
+  material: firstPage.materialTypeTitle,
   weight: firstPage.materialWeight,
-
+  addr: firstPage.customerAddress,
 })
 
 export default connect(mapStateToProps)(ResultPage)

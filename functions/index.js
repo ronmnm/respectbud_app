@@ -1,15 +1,15 @@
 require("dotenv").config()
 const { functions, db } = require("./firebase")
-const openrouteservice = require("openrouteservice-js")
+// const telegramBot = require("node-telegram-bot-api")
+// const openrouteservice = require("openrouteservice-js")
 const sendEmail = require("./src/send-mail")
 const changeOrder = require("./src/changeOrderTo30t")
+const { notifyBot, leavePage } = require("./src/telegram_bot")
 
-let Matrix = new openrouteservice.Matrix({
-  api_key: process.env.OPEN_ROUTE_SERVICE_KEY,
-})
-
-exports.getPrice = functions.region("europe-west1").https.onCall((data, context) => {})
+// exports.getPrice = functions.region("europe-west1").https.onCall((data, context) => {})
 exports.changeOrder = changeOrder
+exports.notifyBot = notifyBot
+exports.leavePage = leavePage
 
 exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, context) => {
   let { deliveryDateHuman, deliveryTime, phoneOnUnloading, orderComment, time, phone, name, address, weight } = data
@@ -30,9 +30,7 @@ exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, 
 
   let rawData
   try {
-    rawData = await (
-      await db.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).get()
-    ).data()
+    rawData = await (await db.collection("customers").doc(phone.substr(3)).collection("orders").doc(time).get()).data()
     // console.log(rawData)
   } catch (err) {
     console.log(err)
@@ -57,6 +55,9 @@ exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, 
 
   sendEmail(phone, time, rawData, null)
 })
+
+
+
 
 //// old varik
 // exports.getPrice = functions.https.onCall(async (data, context) => {
