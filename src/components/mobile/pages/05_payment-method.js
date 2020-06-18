@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { AnketaPageStyled } from './01-anketa';
-import MobileHeader from './header/header';
-import { PrimaryButton } from '../../elements/buttons';
-import { Dropdown } from '../../elements/dropdown';
-import { connect } from 'react-redux';
-import { LabelStyled } from './01-anketa';
-import * as t from '../../../redux/actionTypes';
-import { getPrice } from '../../../services/get-price';
+import React, { useState } from "react"
+import styled from "styled-components"
+import { AnketaPageStyled } from "./01-anketa"
+import MobileHeader from "./header/header"
+import { PrimaryButton } from "../../elements/buttons"
+import { Dropdown } from "../../elements/dropdown"
+import { connect } from "react-redux"
+import { LabelStyled } from "./01-anketa"
+import * as t from "../../../redux/actionTypes"
+import { getPrice } from "../../../services/get-price"
 // import { createBrowserHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { Router } from "react-router-dom"
 // import ResultPage from '../../desktop/main-content/02_result/result-page';
-import { history } from '../mobile';
-import notifyBot from '../../../services/notify-bot';
+import { history } from "../mobile"
+import notifyBot from "../../../services/notify-bot"
 
 // const history = createBrowserHistory();
 
 const PaymentStyled = styled(AnketaPageStyled)`
-  .content_wrapper{
+  .content_wrapper {
     align-self: flex-start;
     margin-top: 20px;
   }
-`;
+`
 
 function PaymentMethodPage({
   dispatch,
@@ -36,28 +36,28 @@ function PaymentMethodPage({
   phone,
   customerName,
 }) {
-  const [loading, setLoading] = useState(0);
+  const [loading, setLoading] = useState(0)
 
   const makeCalculations = async () => {
-    setLoading(1);
-    const time = new Date().toLocaleString();
-    dispatch({type: t.SET_CALCULATION_TIMESTAMP, payload: time})
-    const result = await getPrice(addr, materialTitle, materialTypeTitle, weight, paymentA, coords, phone, time);
+    setLoading(1)
+    const time = new Date().toLocaleString()
+    dispatch({ type: t.SET_CALCULATION_TIMESTAMP, payload: time })
+    const result = await getPrice(addr, materialTitle, materialTypeTitle, weight, paymentA, coords, phone, time)
 
-    dispatch({ type: t.SET_FINAL_PRICE, payload: result.pickedPriceRound });
+    dispatch({ type: t.SET_FINAL_PRICE, payload: result.pickedPriceRound })
     if (result.price30t) {
       dispatch({ type: t.SET_30T_PRICE, payload: result.price30t })
     }
-    setLoading(0);
-    history.push('/result');
-    notifyBot({phone: `${customerName} нажал "Рассчитать"`})
-  };
+    setLoading(0)
+    history.push("/result")
+    notifyBot({ event: "DO_CALCULATION", payload: { phone, name: customerName, addr, weight, materialTypeTitle } })
+  }
 
   return (
     <Router history={history}>
       <PaymentStyled>
         <MobileHeader title="Форма оплаты" withButton navLinkTo="map" />
-        <div className='content_wrapper'>
+        <div className="content_wrapper">
           <div className="input_field_wrapper">
             <LabelStyled>* Выберите форму оплаты</LabelStyled>
             <Dropdown
@@ -81,7 +81,7 @@ function PaymentMethodPage({
         {/* </NavLink> */}
       </PaymentStyled>
     </Router>
-  );
+  )
 }
 
 const mapStateToProps = ({ globalData, firstPage }) => ({
@@ -94,7 +94,7 @@ const mapStateToProps = ({ globalData, firstPage }) => ({
   paymentA: firstPage.paymentMethodAlias,
   coords: globalData.selectedCoordinates,
   phone: firstPage.customerPhone,
-  customerName: firstPage.customerName
-});
+  customerName: firstPage.customerName,
+})
 
-export default connect(mapStateToProps)(PaymentMethodPage);
+export default connect(mapStateToProps)(PaymentMethodPage)

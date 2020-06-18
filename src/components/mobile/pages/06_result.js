@@ -5,7 +5,7 @@ import MobileHeader from "./header/header"
 import { PrimaryButton, GreyButton } from "../../elements/buttons"
 import { connect } from "react-redux"
 import * as t from "../../../redux/actionTypes"
-import {  NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { history } from "../mobile"
 import changeOrder from "../../../services/set30tOrder"
 import notifyBot from "../../../services/notify-bot"
@@ -35,16 +35,37 @@ const ResultStyled = styled(AnketaPageStyled)`
   }
 `
 
-function ResultPage({ dispatch, finalPrice, price30t, phone, time, paymentMethodList, customerName, customerOrganization, materialTypeTitle, weight }) {
-  function handleCalculateAgain(){
-    notifyBot({phone: `${customerName} ушел в отказ, вот его номер${phone} Организация: ${customerOrganization} Товар: ${materialTypeTitle} Вес: ${weight} Цена ${finalPrice}`})
-    history.push('./material')
+function ResultPage({
+  dispatch,
+  finalPrice,
+  price30t,
+  phone,
+  time,
+  paymentMethodList,
+  customerName,
+  customerOrganization,
+  materialTypeTitle,
+  weight,
+}) {
+  function handleCalculateAgain() {
+    notifyBot({
+      event: "CALC_AGAIN_BUTTON",
+      payload: {
+        phone,
+        name: customerName,
+        organization: customerOrganization,
+        material: materialTypeTitle,
+        weight,
+        finalPrice,
+      },
+    })
+    history.push("./material")
   }
   function handle30tOrder() {
     dispatch({ type: t.SET_FINAL_PRICE, payload: price30t })
     dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: 30 })
-    changeOrder({ phone, time, price: price30t, })
-    history.push('./order')
+    changeOrder({ phone, time, price: price30t })
+    history.push("./order")
   }
   return (
     <ResultStyled>
@@ -67,13 +88,13 @@ function ResultPage({ dispatch, finalPrice, price30t, phone, time, paymentMethod
       </NavLink>
       {price30t && (
         <div>
-          <GreyButton style={{ marginTop: "15px" }} onClick={handle30tOrder}>Заказать 30т</GreyButton>
+          <GreyButton style={{ marginTop: "15px" }} onClick={handle30tOrder}>
+            Заказать 30т
+          </GreyButton>
         </div>
       )}
       <NavLink to="/material">
-        <GreyButton
-          style={{ marginTop: "15px" }}
-          onClick={handleCalculateAgain}>
+        <GreyButton style={{ marginTop: "15px" }} onClick={handleCalculateAgain}>
           Рассчитать заново
         </GreyButton>
       </NavLink>
