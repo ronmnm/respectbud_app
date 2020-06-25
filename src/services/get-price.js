@@ -6,6 +6,7 @@ import openrouteservice from "openrouteservice-js"
 import { filterSuppliersArray } from "./get-price-utils/filter-suppliers-array"
 import { calculateDeliveryCost } from "./get-price-utils/calculate-delivery-costs"
 import modifyResults from "./get-price-utils/modify-results"
+import { result } from "lodash"
 
 const openrouteserviceKey = "5b3ce3597851110001cf6248a9876145e10e43139207d591e4ab1c9d"
 
@@ -100,9 +101,10 @@ export async function getPrice2(address, materialTitle, materialType, weight, pa
  * @param distances is array of distances, each elements is also array
  * @param weight amount of tons
  */
+
 export async function getPrice(address, materialTitle, materialType, weight, paymentMethod, coordinates, phone, time) {
-  if (materialType === "Супесь") return {pickedPriceRound: 1300}
-  if (materialType === "Суглинок") return {pickedPriceRound: 1100}
+  if (materialType === "Супесь") return { pickedPriceRound: 1300 }
+  if (materialType === "Суглинок") return { pickedPriceRound: 1100 }
   // 1. Получаем массив поставщиков из базы
   const snapshot = await firestore.collection("suppliers").get()
   const allSuppliers = snapshot.docs.map(doc => doc.data())
@@ -136,25 +138,63 @@ export async function getPrice(address, materialTitle, materialType, weight, pay
   let results = calculateDeliveryCost(distancesArray.distances, +weight)
 
   // 6. Добавление доп информации
-  results = modifyResults(results, weight, materialType, paymentMethod, address, suppliers)
+  results = modifyResults({
+    results,
+    weight,
+    materialType,
+    materialTitle,
+    paymentMethod,
+    address,
+    suppliers,
+    distances: distancesArray.distances,
+  })
   console.log("Результаты просчета", results)
 
   let pricesForCustomer = [] // [9989, 9898, 8989]
-  let price30t = null
+  let shamraevskyPrice = null
+  let pricesForCustomer30t = []
+
   for (let i = 0; results.length > i; i++) {
     if (results[i].priceForCustomer !== null) {
       pricesForCustomer.push(results[i].priceForCustomer)
-    } else if (results[i].price30t) {
-      price30t = Math.ceil(results[i].price30t / 10) * 10
+    }
+    // взять все цены всех поставщиков для веса 30 и запихнуть в array
+    if (results[i].price30tAllSuppliers) {
+      pricesForCustomer30t.push(results[i].price30tAllSuppliers)
+    }
+    if (results[i].price30t) {
+      pricesForCustomer30t.push(results[i].price30t)
+      // shamraevskyPrice = results[i].price30t // Math.ceil(results[i].price30t / 10) * 10
+      console.log('shamraevskyPrice', shamraevskyPrice)
     }
   }
+
+  // if (shamraevskyPrice) {
+  //   pricesForCustomer30t.push(shamraevskyPrice)
+  // }
+  console.log("pricesForCustomer30t", pricesForCustomer30t)
+
+  let pickedPrice30t = null
+  let pickedPrice30tRound = null
+  if(pricesForCustomer30t.length > 0){
+    pickedPrice30t = Math.min(...pricesForCustomer30t)
+    pickedPrice30tRound = Math.ceil(pickedPrice30t / 10) * 10
+  }
+
   console.log("Цены для клиента", pricesForCustomer)
 
   const pickedPrice = Math.min(...pricesForCustomer)
+
   const pickedResult = results.filter(item => item.priceForCustomer === pickedPrice)
   console.log("выбранные результат расчета", pickedResult)
 
   const pickedPriceRound = Math.ceil(pickedPrice / 10) * 10
+
+
+  let pickedResult30 = null // результат расчета на 30т если есть
+  if(pickedPrice30t){
+    pickedResult30 = (results.filter(item => item.price30tAllSuppliers === pickedPrice30t))[0]
+  }
 
   // set data to firestore
   await firestore
@@ -162,9 +202,9 @@ export async function getPrice(address, materialTitle, materialType, weight, pay
     .doc(phone.substr(3))
     .collection("orders")
     .doc(time)
-    .set({ calculations: { ...results }, result: pickedResult[0] })
+    .set({ calculations: { ...results }, result: pickedResult[0], resultsFor30t: pickedResult30 })
 
-  return { pickedPriceRound, price30t }
+  return { pickedPriceRound, price30t: pickedPrice30tRound }
 }
 
 // const getPrice = functions().httpsCallable('getPrice');
