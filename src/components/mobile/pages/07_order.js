@@ -81,11 +81,12 @@ function OrderPage({
         orderComment, time, phone,
         name, address, weight,
       })
-      history.push("/final-page")
+      
     } catch (err) {
       console.error(err)
     }
     setLoading(0)
+    history.push("/final-page")
   }
 
   return (
@@ -118,7 +119,7 @@ function OrderPage({
           />
         </div>
         <div className="text_area_wrapper">
-          <LabelStyled>* Добавить комментарий</LabelStyled>
+          <LabelStyled>Добавить комментарий</LabelStyled>
           <textarea
             placeholder="Комментарий"
             value={orderComment || ""}
@@ -128,7 +129,7 @@ function OrderPage({
       </div>
       <PrimaryButton
         loading={loading}
-        primaryDisable={!orderComment || phoneOnUnloading.length !== 19 || !deliveryDate}
+        primaryDisable={phoneOnUnloading.length !== 19 || !deliveryDate}
         onClick={makeOrderTap}>
         Оформить заказ
       </PrimaryButton>

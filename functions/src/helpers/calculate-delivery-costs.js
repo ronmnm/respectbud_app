@@ -3,7 +3,7 @@
  * @param distances is array of distances
  * @param weight amount of tons
  */
-export function calculateDeliveryCost(distances, weight) {
+module.exports.calculateDeliveryCost = function (distances, weight) {
   if (weight <= 7) {
     return _getCostZil(distances, "Зил")
   } else if (8 <= weight && weight <= 10) {

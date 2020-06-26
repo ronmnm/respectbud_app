@@ -7,6 +7,8 @@ import { history } from "../main-content"
 import { NavLink } from "react-router-dom"
 import changeOrder from "../../../../services/set30tOrder"
 import notifyBot from "../../../../services/notify-bot"
+import { firestore } from "../../../../services/firebase"
+
 
 const ResultStyled = styled.div`
   display: grid;
@@ -62,10 +64,11 @@ const ResultPage = ({ dispatch, finalPrice, price30t, phone, time, name, organiz
     history.push("/")
   }
 
-  function handle30tOrder() {
+  async function handle30tOrder() {
     dispatch({ type: t.SET_FINAL_PRICE, payload: price30t })
     dispatch({ type: t.SET_MATERIAL_WEIGHT, payload: 30 })
     changeOrder({ phone, time, price: price30t })
+
   }
   return (
     <ResultStyled>

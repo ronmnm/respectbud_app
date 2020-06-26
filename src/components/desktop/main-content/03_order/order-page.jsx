@@ -13,6 +13,7 @@ import ru from "date-fns/locale/ru"
 import { Dropdown } from "../../../elements/dropdown"
 import PhoneInput from "../../../elements/phone-input"
 import PlaceOrder from "../../../../services/placeOrder"
+import { history } from "../main-content"
 
 registerLocale("ru", ru)
 
@@ -166,6 +167,9 @@ const OrderPage = ({
     }
     setLoading(0)
   }
+  function backToMain(){
+    history.push('/')
+  }
 
   return (
     <OrderPageStyled>
@@ -223,7 +227,7 @@ const OrderPage = ({
           <div>
             <PrimaryButton
               loading={loading}
-              primaryDisable={!deliveryDate || !deliveryTime || phoneOnUnloading.length !== 19 || !orderComment}
+              primaryDisable={!deliveryDate || phoneOnUnloading.length !== 19}
               onClick={makeOrderClick}>
               Оформить заказ
             </PrimaryButton>
@@ -259,7 +263,7 @@ const OrderPage = ({
 }
 
 const mapDispatchToProps = dispatch => ({
-  backToMain: () => dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM }),
+  // backToMain: () => dispatch({ type: t.SET_CURRENT_COMPONENT, payload: t.MAIN_FORM }),
   setDeliveryDate: value => dispatch({ type: t.SET_DELIVERY_DATE, payload: value }),
   setDeliveryTime: value => dispatch({ type: t.SET_DELIVERY_TIME, payload: value }),
   setPhone: value => dispatch({ type: t.SET_PHONE_ON_UNLOADING, payload: value }),

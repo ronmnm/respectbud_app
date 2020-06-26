@@ -1,5 +1,12 @@
-export function filterSuppliersArray(allSuppliers, materialTitle, weight, materialType, paymentMethod){
-  // let shoto;
+/**
+ * 
+ * @param {*} allSuppliers 
+ * @param {*} materialTitle 
+ * @param {*} weight 
+ * @param {*} materialType 
+ * @param {*} paymentMethod 
+ */
+module.exports.filterSuppliersArray = function (allSuppliers, materialTitle, weight, materialType, paymentMethod){
   if(materialTitle === 'Песок' && +weight >= 20){
     // если песок и >= 20т то удаляет только карьер со щебнем
     let withoutGranit = allSuppliers.filter(supplier => !supplier.isGranitKaryer)

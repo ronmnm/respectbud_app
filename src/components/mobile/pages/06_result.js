@@ -53,10 +53,7 @@ function ResultPage({
       payload: {
         phone,
         name: customerName,
-        organization: customerOrganization,
-        material: materialTypeTitle,
-        weight,
-        finalPrice,
+
       },
     })
     history.push("./material")

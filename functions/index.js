@@ -5,8 +5,11 @@ const { functions, db } = require("./firebase")
 const sendEmail = require("./src/send-mail")
 const changeOrder = require("./src/changeOrderTo30t")
 const { notifyBot, leavePage } = require("./src/telegram_bot")
+const { getPrice } = require("./src/get-price")
 
 // exports.getPrice = functions.region("europe-west1").https.onCall((data, context) => {})
+
+exports.getPrice = getPrice
 exports.changeOrder = changeOrder
 exports.notifyBot = notifyBot
 exports.leavePage = leavePage
@@ -21,7 +24,6 @@ exports.placeOrder = functions.region("europe-west1").https.onCall(async (data, 
       orderComment,
       phone,
       name,
-
       weight,
     })
   } catch (err) {

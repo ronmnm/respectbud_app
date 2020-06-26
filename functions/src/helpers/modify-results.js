@@ -2,9 +2,15 @@
  *
  * @param {*} param0
  */
-export default function modifyResults({
-  results, weight, materialType, materialTitle,
-  paymentMethod, address, suppliers, distances,
+module.exports.modifyResults = function ({
+  results,
+  weight,
+  materialType,
+  materialTitle,
+  paymentMethod,
+  address,
+  suppliers,
+  // distances,
 }) {
   // 6.1 формула расчета для щебня с карьера когда
   const getShamraevskyPrice = distance => ((distance + 15) * 18 + 500) * 1.18 * 1.1 + 1100 + 500
@@ -22,19 +28,29 @@ export default function modifyResults({
     results[i].weight = weight
 
     // добавляет поле price30tAllSuppliers - просчет на 30т только для площадок
-    if (materialTitle === "Щебень" && +weight >= 25 && +weight < 30 &&
-      results[i].supplierName !== "K.1_Шамраевский" && results[i].supplierName !== "K.1_GMP+"
+    if (
+      materialTitle === "Щебень" &&
+      +weight >= 25 &&
+      +weight < 30 &&
+      results[i].supplierName !== "K.1_Шамраевский" &&
+      results[i].supplierName !== "K.1_GMP+"
     ) {
       results[i].price30tAllSuppliers = materialPrice1t * 30 + results[i].deliveryPrice
     }
 
     // если есть карьер щебня
     if (results[i].supplierName === "K.1_Шамраевский" && +weight >= 25 && +weight < 30) {
+      results[i].weight = 30
+      results[i].materialPrice = 30 * materialPrice1t
+      results[i].deliveryPrice = getShamraevskyPrice(results[i].initialDistance)
       results[i].priceForCustomer = null // затирает что бы не брать в основной расчет
       results[i].price30tAllSuppliers = getShamraevskyPrice(results[i].initialDistance) + materialPrice1t * 30 //
     }
     if (results[i].supplierName === "K.1_GMP+" && +weight >= 25 && +weight < 30) {
-      results[i].priceForCustomer = null// затирает что бы не брать в основной расчет
+      results[i].weight = 30
+      results[i].materialPrice = 30 * materialPrice1t
+      results[i].deliveryPrice = getGMPPrice(results[i].initialDistance)
+      results[i].priceForCustomer = null // затирает что бы не брать в основной расчет
       results[i].price30tAllSuppliers = getGMPPrice(results[i].initialDistance) + materialPrice1t * 30 // только для карьера щена за 30т
     }
 

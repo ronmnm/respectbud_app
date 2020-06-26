@@ -6,6 +6,7 @@ import * as t from '../../../redux/actionTypes';
 import MobileHeader from './header/header';
 import { AnketaPageStyled } from './01-anketa';
 import { NavLink } from 'react-router-dom';
+import { history } from '../mobile';
 
 const FinalStyled = styled(AnketaPageStyled)`
   h3 {
@@ -34,7 +35,7 @@ function FinalPage({ dispatch }) {
         </p>
       </div>
       <NavLink to="/">
-        <PrimaryButton onClick={() => dispatch({ type: t.SET_CURRENT_MOBILE_COMPONENT, payload: t.ANKETA_PAGE })}>
+        <PrimaryButton onClick={() => history.push('/')}>
           На главную
         </PrimaryButton>
       </NavLink>

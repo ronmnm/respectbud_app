@@ -1,19 +1,23 @@
 // import { functions } from "./firebase"
-import { firestore } from "./firebase"
-// import firebase from "firebase/app"
+// import { firestore } from "./firebase"
+import firebase from './firebase'
 import openrouteservice from "openrouteservice-js"
 
-import { filterSuppliersArray } from "./get-price-utils/filter-suppliers-array"
-import { calculateDeliveryCost } from "./get-price-utils/calculate-delivery-costs"
-import modifyResults from "./get-price-utils/modify-results"
-import { result } from "lodash"
+// import { filterSuppliersArray } from "./get-price-utils/filter-suppliers-array"
+// import { calculateDeliveryCost } from "./get-price-utils/calculate-delivery-costs"
+// import modifyResults from "./get-price-utils/modify-results"
 
-const openrouteserviceKey = "5b3ce3597851110001cf6248a9876145e10e43139207d591e4ab1c9d"
+// const openrouteserviceKey = "5b3ce3597851110001cf6248a9876145e10e43139207d591e4ab1c9d"
 
-var Matrix = new openrouteservice.Matrix({
-  api_key: openrouteserviceKey,
-})
+// var Matrix = new openrouteservice.Matrix({
+//   api_key: openrouteserviceKey,
+// })
 
+export async function getPrice(data) {
+  const getPrice = firebase.app().functions('europe-west1').httpsCallable('getPrice')
+  return getPrice({ ...data })
+}
+/*
 export async function getPrice2(address, materialTitle, materialType, weight, paymentMethod, coordinates, phone, time) {
   let name = "K.1_Шамраевский"
   let lat = "" // 50
@@ -96,13 +100,8 @@ export async function getPrice2(address, materialTitle, materialType, weight, pa
   await firestore.collection("suppliers").doc(name).set(suppliersArray[0])
 }
 
-/**
- * Function returns delivery costs for particular truck depending on weight
- * @param distances is array of distances, each elements is also array
- * @param weight amount of tons
- */
 
-export async function getPrice(address, materialTitle, materialType, weight, paymentMethod, coordinates, phone, time) {
+export async function getPrice11(address, materialTitle, materialType, weight, paymentMethod, coordinates, phone, time) {
   if (materialType === "Супесь") return { pickedPriceRound: 1300 }
   if (materialType === "Суглинок") return { pickedPriceRound: 1100 }
   // 1. Получаем массив поставщиков из базы

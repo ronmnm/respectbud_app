@@ -59,41 +59,15 @@ const CalculateForm = ({
   paymentMethodAlias,
   selectedCoordinates,
   phone,
+  finalPrice,
   materialTitle,
 }) => {
   const [isLoading, setIsLoading] = useState(0)
-  // async function notifyBeforeClose() {
-  //   await notifyBot({
-  //     event: "TAB_CLOSED",
-  //     payload: { phone, name: "yo", organization: "blo", material: "bla", weight, finalPrice: "mil" },
-  //   })
-  // }
-  // useEffect(() => {
-  //   window.addEventListener("beforeunload", async ev => {
-  //     ev.preventDefault()
-  //     return await notifyBeforeClose()
-  //   })
-  // }, [])
-  // useEffect(() => {
-  //   window.addEventListener("unload", function () {
-  //     let data = new FormData()
-  //     data.append("hello", "world")
-  //     navigator.sendBeacon("https://europe-west1-inbound-analogy-278220.cloudfunctions.net/leavePage", data)
-  //   })
-
-    // window.onbeforeunload = async () => {
-    //   return notifyBot({
-    //     event: "TAB_CLOSED",
-    //     payload: { phone, name: "yo", organization: "blo", material: "bla", weight, finalPrice: "mil" },
-    //   })
-    //   console.log("lorem tdoudeoudoen hdnoedh nudoen uoetdu tohed")
-    // }
-  // })
   function fake() {
-    let real = 'https://europe-west1-inbound-analogy-278220.cloudfunctions.net/leavePage'
-    let fakeurl = 'http://localhost:5001/inbound-analogy-278220/europe-west1/leavePage'
+    let real = "https://europe-west1-inbound-analogy-278220.cloudfunctions.net/leavePage"
+    let fakeurl = "http://localhost:5001/inbound-analogy-278220/europe-west1/leavePage"
 
-    navigator.sendBeacon(real, JSON.stringify({ab: 5, you: 'string'}))
+    navigator.sendBeacon(real, JSON.stringify({ ab: 5, you: "string" }))
     // let obj = {}
     // let arr = [...data]
     // for(let i = 0; arr.length > i; i++){
@@ -102,31 +76,43 @@ const CalculateForm = ({
     // console.log(obj)
   }
 
-
   async function handleCalculateClick() {
     setIsLoading(1)
     await registerNewCustomer(customerName, phone, customerOrganization)
 
     const time = new Date().toLocaleString()
     dispatch({ type: t.SET_CALCULATION_TIMESTAMP, payload: time })
-    const result = await getPrice(
-      addr,
+
+    const result = await getPrice({
+      address: addr,
       materialTitle,
-      materialTypeTitle,
+      materialType: materialTypeTitle,
       weight,
-      paymentMethodAlias,
-      selectedCoordinates,
+      paymentMethod: paymentMethodAlias,
+      coordinates: selectedCoordinates,
       phone,
-      time
-    )
-    console.log("Финальная цена", result)
-    dispatch({ type: t.SET_FINAL_PRICE, payload: result.pickedPriceRound })
-    if (result.price30t) {
-      dispatch({ type: t.SET_30T_PRICE, payload: result.price30t })
+      time,
+    })
+    // console.log("Финальная цена", result.data)
+    dispatch({ type: t.SET_FINAL_PRICE, payload: result.data.pickedPriceRound })
+    dispatch({ type: t.SET_30T_PRICE, payload: null })
+    if (result.data.price30t) {
+      dispatch({ type: t.SET_30T_PRICE, payload: result.data.price30t })
     }
     setIsLoading(0)
     history.push("/result")
-    notifyBot({ event: "DO_CALCULATION", payload: { phone, name: customerName, addr, weight, materialTypeTitle } })
+    notifyBot({
+      event: "DO_CALCULATION",
+      payload: {
+        phone,
+        name: customerName,
+        organization: customerOrganization,
+        addr,
+        weight,
+        material: materialTypeTitle,
+        finalPrice: result.data.pickedPriceRound,
+      },
+    })
   }
 
   // function getError() {}
@@ -185,6 +171,7 @@ const CalculateForm = ({
                 !customerPaymentMethod ||
                 !selectedCoordinates ||
                 !addr ||
+                !weight ||
                 checkWeight(weight)
               }
               onClick={handleCalculateClick}>
@@ -207,6 +194,7 @@ const mapStateToProps = ({ firstPage, globalData }) => ({
   selectedCoordinates: globalData.selectedCoordinates,
   phone: firstPage.customerPhone,
   materialTitle: firstPage.materialTitle,
+  finalPrice: globalData.finalPrice,
 })
 
 export default connect(mapStateToProps)(CalculateForm)

@@ -35,6 +35,8 @@ function PaymentMethodPage({
   coords,
   phone,
   customerName,
+  finalPrice,
+  customerOrganization,
 }) {
   const [loading, setLoading] = useState(0)
 
@@ -42,15 +44,36 @@ function PaymentMethodPage({
     setLoading(1)
     const time = new Date().toLocaleString()
     dispatch({ type: t.SET_CALCULATION_TIMESTAMP, payload: time })
-    const result = await getPrice(addr, materialTitle, materialTypeTitle, weight, paymentA, coords, phone, time)
+    const result = (await getPrice({
+      address: addr,
+      materialTitle,
+      materialType: materialTypeTitle,
+      weight,
+      paymentMethod: paymentA,
+      coordinates: coords,
+      phone,
+      time,
+    })).data
 
     dispatch({ type: t.SET_FINAL_PRICE, payload: result.pickedPriceRound })
+    dispatch({ type: t.SET_30T_PRICE, payload: null })
     if (result.price30t) {
       dispatch({ type: t.SET_30T_PRICE, payload: result.price30t })
     }
     setLoading(0)
     history.push("/result")
-    notifyBot({ event: "DO_CALCULATION", payload: { phone, name: customerName, addr, weight, materialTypeTitle } })
+    notifyBot({
+      event: "DO_CALCULATION",
+      payload: {
+        phone,
+        name: customerName,
+        addr,
+        organization: customerOrganization,
+        weight,
+        material: materialTypeTitle,
+        finalPrice: result.pickedPriceRound,
+      },
+    })
   }
 
   return (
@@ -59,7 +82,7 @@ function PaymentMethodPage({
         <MobileHeader title="Форма оплаты" withButton navLinkTo="map" />
         <div className="content_wrapper">
           <div className="input_field_wrapper">
-            <LabelStyled>* Выберите форму оплаты</LabelStyled>
+            <LabelStyled style={{ marginBottom: "15px" }}>* Выберите форму оплаты</LabelStyled>
             <Dropdown
               withBorder={true}
               list={paymentMethodList}
@@ -95,6 +118,8 @@ const mapStateToProps = ({ globalData, firstPage }) => ({
   coords: globalData.selectedCoordinates,
   phone: firstPage.customerPhone,
   customerName: firstPage.customerName,
+  finalPrice: globalData.finalPrice,
+  customerOrganization: firstPage.customerOrganization,
 })
 
 export default connect(mapStateToProps)(PaymentMethodPage)
