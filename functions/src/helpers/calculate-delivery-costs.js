@@ -5,18 +5,23 @@
  */
 module.exports.calculateDeliveryCost = function (distances, weight) {
   if (weight <= 7) {
-    return _getCostZil(distances, "Зил")
+    return _getCostZil(distances, "Зил") 
+
   } else if (8 <= weight && weight <= 10) {
     // return _getCostFor_7_10_20(distances, 35, 600, "Камаз")
-    return _getCostKamaz(distances, "Камаз")
+    return _getCostKamaz(distances, "Камаз") 
+
   } else if (11 <= weight && weight <= 20) {
     // eсли вес >= 20 то + карьеры по песку
-    return _getCostMaz(distances, "Маз")
+    return _getCostMaz(distances, "Маз") 
+
   } else if (21 <= weight && weight <= 30) {
     // eсли вес >= 30 то + карьеры по щебню - 200 маржа
-    return _getCost30(distances, "30 Tонник")
+    return _getCost30(distances, "30 Tонник") 
+
   } else if (weight >= 31) {
-    return getCost40(distances, "40 Tонник")
+    return getCost40(distances, "40 Tонник") 
+
   }
 
   function _adjustDistance(distance) {
@@ -48,7 +53,7 @@ module.exports.calculateDeliveryCost = function (distances, weight) {
         deliveryPrice = ((distance * 2) / 100) * 35 * 18 * 1.18 + 1000
       }
 
-      return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
+      return { distance, initialDistance: kmArray[0], deliveryPrice: deliveryPrice + 200, truck }
     })
   }
 
@@ -74,7 +79,7 @@ module.exports.calculateDeliveryCost = function (distances, weight) {
         deliveryPrice = ((distance * 2) / 100) * 35 * 18 * 1.18 + 1100
       }
 
-      return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
+      return { distance, initialDistance: kmArray[0], deliveryPrice: deliveryPrice + 200, truck }
     })
   }
 
@@ -203,7 +208,7 @@ module.exports.calculateDeliveryCost = function (distances, weight) {
       //   deliveryPrice = 5000
       // }
 
-      return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
+      return { distance, initialDistance: kmArray[0], deliveryPrice: deliveryPrice + 300, truck }
     })
   }
 
@@ -235,7 +240,7 @@ module.exports.calculateDeliveryCost = function (distances, weight) {
       }
 
       // deliveryPrice += 200 // + 200 грн
-      return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
+      return { distance, initialDistance: kmArray[0], deliveryPrice: deliveryPrice + 500, truck }
     })
   }
 
@@ -270,7 +275,7 @@ module.exports.calculateDeliveryCost = function (distances, weight) {
 
       deliveryPrice += 200 // + 200 грн
 
-      return { distance, initialDistance: kmArray[0], deliveryPrice, truck }
+      return { distance, initialDistance: kmArray[0], deliveryPrice: deliveryPrice + 600, truck }
     })
   }
 }

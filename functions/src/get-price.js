@@ -35,6 +35,8 @@ module.exports.getPrice = functions.region("europe-west1").https.onCall(async (d
   const snapshot = await db.collection("suppliers").get()
   const allSuppliers = snapshot.docs.map(doc => doc.data())
 
+
+
   // 2. Фильтруем объект поставщиков по заданному товару, весу и способу оплаты -> на выходе новый массив
   let suppliers = filterSuppliersArray(allSuppliers, materialTitle, weight, materialType, paymentMethod)
   // console.log("Отфильтрованные поставщики:", suppliers)

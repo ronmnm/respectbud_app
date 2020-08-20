@@ -13,8 +13,8 @@ module.exports.modifyResults = function ({
   // distances,
 }) {
   // 6.1 формула расчета для щебня с карьера когда
-  const getShamraevskyPrice = distance => ((distance + 15) * 18 + 500) * 1.18 * 1.1 + 1100 + 500
-  const getGMPPrice = distance => ((distance + 10) * 18 + 400) * 1.18 * 1.1 + 1000 + 500
+  const getShamraevskyPrice = distance => ((distance + 15) * 18 + 500) * 1.18 * 1.1 + 1100 + 1300
+  const getGMPPrice = distance => ((distance + 10) * 18 + 400) * 1.18 * 1.1 + 1000 + 1300
 
   for (let i = 0; results.length > i; i++) {
     let materialPrice1t = suppliers[i].materials[materialType][paymentMethod]
