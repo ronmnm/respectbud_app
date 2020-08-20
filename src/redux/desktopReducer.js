@@ -48,15 +48,15 @@ const materialsList = [
       { id: 1, meter3: 1.6, oneTon: 0.625, title: 'Суглинок' },
     ],
   },
-  {
-    id: 3,
-    title: 'Керамзит',
-    selected: false,
-    subitem: [
-      { id: 0, meter3: 0.6, oneTon: 1.666, title: 'Керамзит 5-10' },
-      { id: 1, meter3: 0.6, oneTon: 1.666, title: 'Керамзит 10-20' },
-    ],
-  },
+  // {
+  //   id: 3,
+  //   title: 'Керамзит',
+  //   selected: false,
+  //   subitem: [
+  //     { id: 0, meter3: 0.6, oneTon: 1.666, title: 'Керамзит 5-10' },
+  //     { id: 1, meter3: 0.6, oneTon: 1.666, title: 'Керамзит 10-20' },
+  //   ],
+  // },
 ];
 
 const materialSelectionState = {
@@ -128,9 +128,9 @@ export function firstPageReducer(state = materialSelectionState, action) {
 const orderPageInitialState = {
   deliveryDate: null,
   deliveryDateHuman: null,
-  deliveryTime: "10:00",
-  phoneOnUnloading: "+38 (078) 787-87-87",
-  orderComment: 'yo',
+  deliveryTime: null,
+  phoneOnUnloading: 0,
+  orderComment: null,
 };
 
 export const orderDataReducer = (state = orderPageInitialState, action) => {

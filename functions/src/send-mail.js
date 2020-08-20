@@ -1,7 +1,6 @@
 require("dotenv").config()
 const nodemailer = require("nodemailer")
 
-
 module.exports = function (phone, time, data, option) {
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -14,13 +13,13 @@ module.exports = function (phone, time, data, option) {
   let orderMailOptions = {
     from: process.env.EMAIL,
     to: process.env.EMAIL,
-    subject: `Order from  ${phone};   ${time}`,
+    subject: `Order from  ${phone};  ${time}`,
     html: `
       <div><b>Имя клиента:</b> ${data.name}</div>
       <div><b>Номер телеофна:</b> ${data.phone}</div>
       <div><b>Товар:</b> ${data.result.material}</div>
       <div><b>Вес:</b> ${data.weight} т</div>
-      <div><b>Адрес доставки:</b> ${data.address}</div>
+      <div><b>Адрес доставки:</b> ${data.result.address}</div>
       <div><b>Форма оплаты:</b> ${data.result.paymentMethod}</div>
       <div><b>Цена для клиента:</b> ${data.result.priceForCustomer} грн</div>
       <div><b>Выбранный поставщик:</b> ${data.result.supplierName}</div>
@@ -36,22 +35,22 @@ module.exports = function (phone, time, data, option) {
       <div><b>Коментарий к заказу:</b> ${data.orderComment}</div>
     `,
   }
-  let calcMailOptions = {
-    from: process.env.EMAIL,
-    to: danilko.com,
-    subject: `${(phone, data.name)} Расчет стоимости`,
-    html: `
-      <div><b>Имя клиента:</b> ${data.name}</div>
-      <div><b>Номер телеофна:</b> ${data.phone}</div>
-      <div><b>Товар:</b> ${data.result.material}</div>
-      <div><b>Вес:</b> ${data.weight} т</div>
-      <div><b>Адрес доставки:</b> ${data.address}</div>
-      <div><b>Форма оплаты:</b> ${data.result.paymentMethod}</div>
-    `,
-  }
+  // let calcMailOptions = {
+  //   from: process.env.EMAIL,
+  //   to: danilko.com,
+  //   subject: `${phone, data.name} Расчет стоимости`,
+  //   html: `
+  //     <div><b>Имя клиента:</b> ${data.name}</div>
+  //     <div><b>Номер телеофна:</b> ${data.phone}</div>
+  //     <div><b>Товар:</b> ${data.result.material}</div>
+  //     <div><b>Вес:</b> ${data.weight} т</div>
+  //     <div><b>Адрес доставки:</b> ${data.address}</div>
+  //     <div><b>Форма оплаты:</b> ${data.result.paymentMethod}</div>
+  //   `,
+  // }
 
   let mailOptions
-  if(option === 'notify'){
+  if (option === "notify") {
     mailOptions = calcMailOptions
   } else {
     mailOptions = orderMailOptions
