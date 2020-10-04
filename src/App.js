@@ -20,6 +20,7 @@ function App({ dispatch }) {
     console.log('checkIfLoggedIn');
   }
   checkIfLoggedIn()
+  console.log("hi")
   
   useEffect(() => {
     ReactGA.initialize('UA-166957247-1')

@@ -23,8 +23,7 @@ const MapStyed = styled.div`
 
 function Map({ selectedCoordinates, dispatch }) {
   const map = useRef()
-  const defaultCenterCoords = { lat: 50.44941, lng: 30.524184 }
-
+  const defaultCenterCoords = { lat: 49.983470, lng: 36.263844 }
   function handleOnMapClick(e) {
     let latlng = { lat: e.latLng.lat(), lng: e.latLng.lng() }
     
